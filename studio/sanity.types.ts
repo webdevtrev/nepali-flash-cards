@@ -22,19 +22,19 @@ export type PageReference = {
   [internalGroqTypeReferenceTo]?: 'page'
 }
 
-export type PostReference = {
+export type LessonReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'post'
+  [internalGroqTypeReferenceTo]?: 'lesson'
 }
 
 export type Link = {
   _type: 'link'
-  linkType?: 'href' | 'page' | 'post'
+  linkType?: 'href' | 'page' | 'lesson'
   href?: string
   page?: PageReference
-  post?: PostReference
+  lesson?: LessonReference
   openInNewTab?: boolean
 }
 
@@ -99,10 +99,10 @@ export type BlockContent = Array<
       style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
       listItem?: 'bullet' | 'number'
       markDefs?: Array<{
-        linkType?: 'href' | 'page' | 'post'
+        linkType?: 'href' | 'page' | 'lesson'
         href?: string
         page?: PageReference
-        post?: PostReference
+        lesson?: LessonReference
         openInNewTab?: boolean
         _type: 'link'
         _key: string
@@ -127,6 +127,39 @@ export type Button = {
   link?: Link
 }
 
+export type TagsReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'tags'
+}
+
+export type Word = {
+  _id: string
+  _type: 'word'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation?: string
+  tags?: Array<
+    {
+      _key: string
+    } & TagsReference
+  >
+}
+
+export type Tags = {
+  _id: string
+  _type: 'tags'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -144,10 +177,10 @@ export type Settings = {
     style?: 'normal'
     listItem?: never
     markDefs?: Array<{
-      linkType?: 'href' | 'page' | 'post'
+      linkType?: 'href' | 'page' | 'lesson'
       href?: string
       page?: PageReference
-      post?: PostReference
+      lesson?: LessonReference
       openInNewTab?: boolean
       _type: 'link'
       _key: string
@@ -210,9 +243,9 @@ export type PersonReference = {
   [internalGroqTypeReferenceTo]?: 'person'
 }
 
-export type Post = {
+export type Lesson = {
   _id: string
-  _type: 'post'
+  _type: 'lesson'
   _createdAt: string
   _updatedAt: string
   _rev: string
@@ -492,7 +525,7 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | PageReference
-  | PostReference
+  | LessonReference
   | Link
   | SanityImageAssetReference
   | CallToAction
@@ -500,12 +533,15 @@ export type AllSanitySchemaTypes =
   | BlockContentTextOnly
   | BlockContent
   | Button
+  | TagsReference
+  | Word
+  | Tags
   | Settings
   | SanityImageCrop
   | SanityImageHotspot
   | Page
   | PersonReference
-  | Post
+  | Lesson
   | Person
   | Slug
   | SanityAssistInstructionTask

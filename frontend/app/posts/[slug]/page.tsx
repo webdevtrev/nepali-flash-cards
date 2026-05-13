@@ -4,7 +4,7 @@ import {type PortableTextBlock} from 'next-sanity'
 import {Suspense} from 'react'
 
 import Avatar from '@/app/components/Avatar'
-import {MorePosts} from '@/app/components/Posts'
+import {MoreLessons} from '@/app/components/Posts'
 import PortableText from '@/app/components/PortableText'
 import Image from '@/app/components/SanityImage'
 import {sanityFetch} from '@/sanity/lib/live'
@@ -57,7 +57,7 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   } satisfies Metadata
 }
 
-export default async function PostPage(props: Props) {
+export default async function LessonPage(props: Props) {
   const params = await props.params
   const [{data: post}] = await Promise.all([sanityFetch({query: postQuery, params})])
 
@@ -108,7 +108,7 @@ export default async function PostPage(props: Props) {
       <div className="border-t border-gray-100 bg-gray-50">
         <div className="container py-12 lg:py-24 grid gap-12">
           <aside>
-            <Suspense>{await MorePosts({skip: post._id, limit: 2})}</Suspense>
+            <Suspense>{await MoreLessons({skip: post._id, limit: 2})}</Suspense>
           </aside>
         </div>
       </div>

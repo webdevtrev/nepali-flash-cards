@@ -1,16 +1,16 @@
 import {DocumentTextIcon} from '@sanity/icons'
 import {format, parseISO} from 'date-fns'
 import {defineField, defineType} from 'sanity'
-import type {Post} from '../../../sanity.types'
+import type {Lesson} from '../../../sanity.types'
 
 /**
- * Post schema.  Define and edit the fields for the 'post' content type.
+ * Lesson schema.  Define and edit the fields for the 'lesson' content type.
  * Learn more: https://www.sanity.io/docs/schema-types
  */
 
-export const post = defineType({
-  name: 'post',
-  title: 'Post',
+export const lesson = defineType({
+  name: 'lesson',
+  title: 'Lesson',
   icon: DocumentTextIcon,
   type: 'document',
   fields: [
@@ -24,7 +24,7 @@ export const post = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'A slug is required for the post to show up in the preview',
+      description: 'A slug is required for the lesson to show up in the preview',
       options: {
         source: 'title',
         maxLength: 96,
@@ -61,7 +61,7 @@ export const post = defineType({
           validation: (rule) => {
             // Custom validation to ensure alt text is provided if the image is present. https://www.sanity.io/docs/validation
             return rule.custom((alt, context) => {
-              const document = context.document as Post
+              const document = context.document as Lesson
               if (document?.coverImage?.asset?._ref && !alt) {
                 return 'Required'
               }

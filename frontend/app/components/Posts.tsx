@@ -8,16 +8,16 @@ import OnBoarding from '@/app/components/Onboarding'
 import Avatar from '@/app/components/Avatar'
 import {dataAttr} from '@/sanity/lib/utils'
 
-const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
+const Lesson = ({post}: {post: AllPostsQueryResult[number]}) => {
   const {_id, title, slug, excerpt, date, author} = post
 
   return (
     <article
-      data-sanity={dataAttr({id: _id, type: 'post', path: 'title'}).toString()}
+      data-sanity={dataAttr({id: _id, type: 'lesson', path: 'title'}).toString()}
       key={_id}
       className="border border-gray-200 rounded-sm p-6 bg-gray-50 flex flex-col justify-between transition-colors hover:bg-white relative"
     >
-      <Link className="hover:text-brand underline transition-colors" href={`/posts/${slug}`}>
+      <Link className="hover:text-brand underline transition-colors" href={`/lessons/${slug}`}>
         <span className="absolute inset-0 z-10" />
       </Link>
       <div>
@@ -39,7 +39,7 @@ const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
   )
 }
 
-const Posts = ({
+const Lessons = ({
   children,
   heading,
   subHeading,
@@ -55,7 +55,7 @@ const Posts = ({
   </div>
 )
 
-export const MorePosts = async ({skip, limit}: {skip: string; limit: number}) => {
+export const MoreLessons = async ({skip, limit}: {skip: string; limit: number}) => {
   const {data} = await sanityFetch({
     query: morePostsQuery,
     params: {skip, limit},
@@ -66,15 +66,15 @@ export const MorePosts = async ({skip, limit}: {skip: string; limit: number}) =>
   }
 
   return (
-    <Posts heading={`Recent Posts (${data?.length})`}>
+    <Lessons heading={`Recent Lessons (${data?.length})`}>
       {data?.map((post: AllPostsQueryResult[number]) => (
-        <Post key={post._id} post={post} />
+        <Lesson key={post._id} post={post} />
       ))}
-    </Posts>
+    </Lessons>
   )
 }
 
-export const AllPosts = async () => {
+export const AllLessons = async () => {
   const {data} = await sanityFetch({query: allPostsQuery})
 
   if (!data || data.length === 0) {
@@ -82,13 +82,19 @@ export const AllPosts = async () => {
   }
 
   return (
-    <Posts
-      heading="Recent Posts"
-      subHeading={`${data.length === 1 ? 'This blog post is' : `These ${data.length} blog posts are`} populated from your Sanity Studio.`}
+    <Lessons
+      heading="Recent Lessons"
+      subHeading={`${data.length === 1 ? 'This lesson is' : `These ${data.length} lessons are`} populated from your Sanity Studio.`}
     >
       {data.map((post: AllPostsQueryResult[number]) => (
-        <Post key={post._id} post={post} />
+        <Lesson key={post._id} post={post} />
       ))}
-    </Posts>
+    </Lessons>
   )
 }
+
+// Keep these exports for backwards compatibility during migration
+export const Post = Lesson
+export const MorePosts = MoreLessons
+export const AllPosts = AllLessons
+export const Posts = Lessons

@@ -31,7 +31,7 @@
   },
   {
     "type": "type",
-    "name": "post.reference",
+    "name": "lesson.reference",
     "value": {
       "type": "object",
       "attributes": {
@@ -56,7 +56,7 @@
           "optional": true
         }
       },
-      "dereferencesTo": "post"
+      "dereferencesTo": "lesson"
     }
   },
   {
@@ -87,7 +87,7 @@
               },
               {
                 "type": "string",
-                "value": "post"
+                "value": "lesson"
               }
             ]
           },
@@ -108,11 +108,11 @@
           },
           "optional": true
         },
-        "post": {
+        "lesson": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "post.reference"
+            "name": "lesson.reference"
           },
           "optional": true
         },
@@ -638,7 +638,7 @@
                             },
                             {
                               "type": "string",
-                              "value": "post"
+                              "value": "lesson"
                             }
                           ]
                         },
@@ -659,11 +659,11 @@
                         },
                         "optional": true
                       },
-                      "post": {
+                      "lesson": {
                         "type": "objectAttribute",
                         "value": {
                           "type": "inline",
-                          "name": "post.reference"
+                          "name": "lesson.reference"
                         },
                         "optional": true
                       },
@@ -814,6 +814,167 @@
     }
   },
   {
+    "type": "type",
+    "name": "tags.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "tags"
+    }
+  },
+  {
+    "name": "word",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "word"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "english": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "romanized": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "devanagari": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
+      "pronunciation": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "tags": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "tags.reference"
+            }
+          }
+        },
+        "optional": true
+      }
+    }
+  },
+  {
+    "name": "tags",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "tags"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      }
+    }
+  },
+  {
     "name": "settings",
     "type": "document",
     "attributes": {
@@ -952,7 +1113,7 @@
                             },
                             {
                               "type": "string",
-                              "value": "post"
+                              "value": "lesson"
                             }
                           ]
                         },
@@ -973,11 +1134,11 @@
                         },
                         "optional": true
                       },
-                      "post": {
+                      "lesson": {
                         "type": "objectAttribute",
                         "value": {
                           "type": "inline",
-                          "name": "post.reference"
+                          "name": "lesson.reference"
                         },
                         "optional": true
                       },
@@ -1331,7 +1492,7 @@
     }
   },
   {
-    "name": "post",
+    "name": "lesson",
     "type": "document",
     "attributes": {
       "_id": {
@@ -1344,7 +1505,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "string",
-          "value": "post"
+          "value": "lesson"
         }
       },
       "_createdAt": {

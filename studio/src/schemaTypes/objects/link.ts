@@ -4,7 +4,7 @@ import type {Link} from '../../../sanity.types'
 
 /**
  * Link schema object. This link object lets the user first select the type of link and then
- * then enter the URL, page reference, or post reference - depending on the type selected.
+ * then enter the URL, page reference, or lesson reference - depending on the type selected.
  * Learn more: https://www.sanity.io/docs/studio/object-type
  */
 
@@ -23,7 +23,7 @@ export const link = defineType({
         list: [
           {title: 'URL', value: 'href'},
           {title: 'Page', value: 'page'},
-          {title: 'Post', value: 'post'},
+          {title: 'Lesson', value: 'lesson'},
         ],
         layout: 'radio',
       },
@@ -60,17 +60,17 @@ export const link = defineType({
         }),
     }),
     defineField({
-      name: 'post',
-      title: 'Post',
+      name: 'lesson',
+      title: 'Lesson',
       type: 'reference',
-      to: [{type: 'post'}],
-      hidden: ({parent}) => parent?.linkType !== 'post',
+      to: [{type: 'lesson'}],
+      hidden: ({parent}) => parent?.linkType !== 'lesson',
       validation: (Rule) =>
-        // Custom validation to ensure post reference is provided if the link type is 'post'
+        // Custom validation to ensure lesson reference is provided if the link type is 'lesson'
         Rule.custom((value, context) => {
           const parent = context.parent as Link
-          if (parent?.linkType === 'post' && !value) {
-            return 'Post reference is required when Link Type is Post'
+          if (parent?.linkType === 'lesson' && !value) {
+            return 'Lesson reference is required when Link Type is Lesson'
           }
           return true
         }),

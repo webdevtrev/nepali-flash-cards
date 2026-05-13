@@ -2,7 +2,7 @@ import {defineQuery} from 'next-sanity'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
-const postFields = /* groq */ `
+const lessonFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),
   "title": coalesce(title, "Untitled"),
@@ -16,7 +16,7 @@ const postFields = /* groq */ `
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,
-    "post": post->slug.current
+    "lesson": lesson->slug.current
   }
 `
 
@@ -58,7 +58,7 @@ export const getPageQuery = defineQuery(`
 `)
 
 export const sitemapData = defineQuery(`
-  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {
+  *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {
     "slug": slug.current,
     _type,
     _updatedAt,
@@ -66,19 +66,19 @@ export const sitemapData = defineQuery(`
 `)
 
 export const allPostsQuery = defineQuery(`
-  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {
-    ${postFields}
+  *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {
+    ${lessonFields}
   }
 `)
 
 export const morePostsQuery = defineQuery(`
-  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
-    ${postFields}
+  *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
+    ${lessonFields}
   }
 `)
 
 export const postQuery = defineQuery(`
-  *[_type == "post" && slug.current == $slug] [0] {
+  *[_type == "lesson" && slug.current == $slug] [0] {
     content[]{
     ...,
     markDefs[]{
@@ -86,12 +86,12 @@ export const postQuery = defineQuery(`
       ${linkReference}
     }
   },
-    ${postFields}
+    ${lessonFields}
   }
 `)
 
 export const postPagesSlugs = defineQuery(`
-  *[_type == "post" && defined(slug.current)]
+  *[_type == "lesson" && defined(slug.current)]
   {"slug": slug.current}
 `)
 
