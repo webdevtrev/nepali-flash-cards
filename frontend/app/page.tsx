@@ -1,9 +1,11 @@
+import styles from './HomePage.module.css'
+
 export default function Page() {
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome</h1>
-        <p className="text-gray-600">Nepali Flash Cards</p>
+    <div className={styles.wrapper}>
+      <div className={styles.inner}>
+        <h1 className={styles.heading}>Welcome</h1>
+        <p className={styles.subtitle}>Nepali Flash Cards</p>
       </div>
     </div>
   )

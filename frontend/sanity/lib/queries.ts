@@ -99,3 +99,20 @@ export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+export const wordsQuery = defineQuery(`
+  *[_type == "word"] | order(english asc) {
+    english,
+    romanized,
+    devanagari,
+    pronunciation,
+    "tags": tags[]->_id,
+  }
+`)
+
+export const tagsQuery = defineQuery(`
+  *[_type == "tags"] | order(title asc) {
+    _id,
+    title,
+  }
+`)

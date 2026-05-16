@@ -1,45 +1,29 @@
-@import 'tailwindcss';
-
-@plugin "@tailwindcss/typography";
-
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-medium tracking-tight;
-  }
+:root {
+  --fc-bg: #ffffff;
+  --fc-fg: #111111;
+  --fc-muted: #666;
+  --fc-card: #f7f7f9;
+  --fc-accent: #4b7bec;
+  --fc-accent-weak: #dfe7ff;
+  --fc-good: #2ecc71;
+  --fc-bad: #e74c3c;
+  --fc-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-@utility container {
-  margin: 0 auto;
-  padding: 0 2rem;
+.fc-dark,
+html.dark {
+  --fc-bg: #0f1115;
+  --fc-fg: #f5f7ff;
+  --fc-muted: #aab1c6;
+  --fc-card: #171a21;
+  --fc-accent: #7aa2ff;
+  --fc-accent-weak: #233055;
+  --fc-good: #47e6a1;
+  --fc-bad: #ff6b6b;
+  --fc-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
-  --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
-
-  --color-framework: #000;
-  --color-black: #0b0b0b;
-  --color-white: #fff;
-  --color-brand: #f50;
-  --color-blue: #0052ff;
-  --color-yellow: #cdea19;
-  --color-gray-50: #f6f6f8;
-  --color-gray-100: #eeeef1;
-  --color-gray-200: #e3e4e8;
-  --color-gray-300: #bbbdc9;
-  --color-gray-400: #9499ad;
-  --color-gray-500: #727892;
-  --color-gray-600: #515870;
-  --color-gray-700: #383d51;
-  --color-gray-800: #252837;
-  --color-gray-900: #1b1d27;
-  --color-gray-950: #13141b;
-
-  --default-transition-duration: 250ms;
+html.dark body {
+  background-color: var(--fc-bg);
+  color: var(--fc-fg);
 }

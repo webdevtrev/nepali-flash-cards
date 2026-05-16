@@ -1,0 +1,134 @@
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.375rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.desktopNav {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hamburger {
+    display: none;
+  }
+
+  .desktopNav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.hamburger:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+html.dark .hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bar {
+  display: block;
+  height: 2px;
+  width: 1.25rem;
+  background: currentColor;
+  border-radius: 2px;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.barTop.open {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.barMid.open {
+  opacity: 0;
+}
+
+.barBot.open {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  top: 6rem;
+  z-index: 40;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 50;
+  min-width: 12rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+html.dark .menu {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(24, 24, 27, 0.97);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.navLink {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+
+.navLink:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+html.dark .navLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.desktopNavLink {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.375rem;
+  transition: background 0.15s ease;
+}
+
+.desktopNavLink:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+html.dark .desktopNavLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.menuDivider {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem 0.25rem;
+}
+
+html.dark .menuDivider {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
