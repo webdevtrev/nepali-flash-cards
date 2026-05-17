@@ -27,6 +27,7 @@ export const word = defineType({
       name: 'pronunciation',
       title: 'Pronunciation',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'tags',

@@ -143,7 +143,7 @@ export type Word = {
   english: string
   romanized: string
   devanagari: string
-  pronunciation?: string
+  pronunciation: string
   tags?: Array<
     {
       _key: string
@@ -707,9 +707,9 @@ export type SitemapDataResult = Array<
 >
 
 // Source: sanity/lib/queries.ts
-// Variable: allPostsQuery
+// Variable: allLessonsQuery
 // Query: *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type AllPostsQueryResult = Array<{
+export type AllLessonsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
   title: string
@@ -739,9 +739,9 @@ export type AllPostsQueryResult = Array<{
 }>
 
 // Source: sanity/lib/queries.ts
-// Variable: morePostsQuery
+// Variable: moreLessonsQuery
 // Query: *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type MorePostsQueryResult = Array<{
+export type MoreLessonsQueryResult = Array<{
   _id: string
   status: 'draft' | 'published'
   title: string
@@ -771,9 +771,9 @@ export type MorePostsQueryResult = Array<{
 }>
 
 // Source: sanity/lib/queries.ts
-// Variable: postQuery
+// Variable: lessonQuery
 // Query: *[_type == "lesson" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
-export type PostQueryResult = {
+export type LessonQueryResult = {
   content: Array<
     | {
         children?: Array<{
@@ -836,9 +836,9 @@ export type PostQueryResult = {
 } | null
 
 // Source: sanity/lib/queries.ts
-// Variable: postPagesSlugs
+// Variable: lessonPagesSlugs
 // Query: *[_type == "lesson" && defined(slug.current)]  {"slug": slug.current}
-export type PostPagesSlugsResult = Array<{
+export type LessonPagesSlugsResult = Array<{
   slug: string
 }>
 
@@ -849,6 +849,25 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 
+// Source: sanity/lib/queries.ts
+// Variable: wordsQuery
+// Query: *[_type == "word"] | order(english asc) {    english,    romanized,    devanagari,    pronunciation,    "tags": tags[]->_id,  }
+export type WordsQueryResult = Array<{
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
+  tags: Array<string> | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: tagsQuery
+// Query: *[_type == "tags"] | order(title asc) {    _id,    title,  }
+export type TagsQueryResult = Array<{
+  _id: string
+  title: string
+}>
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
@@ -856,10 +875,12 @@ declare module '@sanity/client' {
     '*[_type == "settings"][0]': SettingsQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
-    '\n  *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult
-    '\n  *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MorePostsQueryResult
-    '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult
-    '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
+    '\n  *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllLessonsQueryResult
+    '\n  *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MoreLessonsQueryResult
+    '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': LessonQueryResult
+    '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
+    '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
+    '\n  *[_type == "tags"] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
   }
 }

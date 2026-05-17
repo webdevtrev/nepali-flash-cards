@@ -1,6 +1,6 @@
 import {person} from './documents/person'
 import {page} from './documents/page'
-import {lesson} from './documents/post'
+import {lesson} from './documents/lesson'
 import {tags} from './documents/tags'
 import {word} from './documents/word'
 import {callToAction} from './objects/callToAction'
