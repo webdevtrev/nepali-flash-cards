@@ -143,7 +143,7 @@ export type Word = {
   english: string
   romanized: string
   devanagari: string
-  pronunciation?: string
+  pronunciation: string
   tags?: Array<
     {
       _key: string
