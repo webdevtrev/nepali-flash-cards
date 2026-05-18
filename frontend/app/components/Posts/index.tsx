@@ -1,15 +1,15 @@
 import Link from 'next/link'
 
 import {sanityFetch} from '@/sanity/lib/live'
-import {morePostsQuery, allPostsQuery} from '@/sanity/lib/queries'
-import {AllPostsQueryResult} from '@/sanity.types'
+import {moreLessonsQuery, allLessonsQuery} from '@/sanity/lib/queries'
+import {AllLessonsQueryResult} from '@/sanity.types'
 import DateComponent from '@/app/components/Date'
 import OnBoarding from '@/app/components/Onboarding'
 import Avatar from '@/app/components/Avatar'
 import {dataAttr} from '@/sanity/lib/utils'
 
-const Lesson = ({post}: {post: AllPostsQueryResult[number]}) => {
-  const {_id, title, slug, excerpt, date, author} = post
+const Lesson = ({lesson}: {lesson: AllLessonsQueryResult[number]}) => {
+  const {_id, title, slug, excerpt, date, author} = lesson
 
   return (
     <article
@@ -57,7 +57,7 @@ const Lessons = ({
 
 export const MoreLessons = async ({skip, limit}: {skip: string; limit: number}) => {
   const {data} = await sanityFetch({
-    query: morePostsQuery,
+    query: moreLessonsQuery,
     params: {skip, limit},
   })
 
@@ -67,15 +67,15 @@ export const MoreLessons = async ({skip, limit}: {skip: string; limit: number}) 
 
   return (
     <Lessons heading={`Recent Lessons (${data?.length})`}>
-      {data?.map((post: AllPostsQueryResult[number]) => (
-        <Lesson key={post._id} post={post} />
+      {data?.map((lesson: AllLessonsQueryResult[number]) => (
+        <Lesson key={lesson._id} lesson={lesson} />
       ))}
     </Lessons>
   )
 }
 
 export const AllLessons = async () => {
-  const {data} = await sanityFetch({query: allPostsQuery})
+  const {data} = await sanityFetch({query: allLessonsQuery})
 
   if (!data || data.length === 0) {
     return <OnBoarding />
@@ -86,8 +86,8 @@ export const AllLessons = async () => {
       heading="Recent Lessons"
       subHeading={`${data.length === 1 ? 'This lesson is' : `These ${data.length} lessons are`} populated from your Sanity Studio.`}
     >
-      {data.map((post: AllPostsQueryResult[number]) => (
-        <Lesson key={post._id} post={post} />
+      {data.map((lesson: AllLessonsQueryResult[number]) => (
+        <Lesson key={lesson._id} lesson={lesson} />
       ))}
     </Lessons>
   )

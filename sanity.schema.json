@@ -904,7 +904,7 @@
         "value": {
           "type": "string"
         },
-        "optional": true
+        "optional": false
       },
       "tags": {
         "type": "objectAttribute",

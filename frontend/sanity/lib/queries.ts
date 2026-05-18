@@ -65,19 +65,19 @@ export const sitemapData = defineQuery(`
   }
 `)
 
-export const allPostsQuery = defineQuery(`
+export const allLessonsQuery = defineQuery(`
   *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {
     ${lessonFields}
   }
 `)
 
-export const morePostsQuery = defineQuery(`
+export const moreLessonsQuery = defineQuery(`
   *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
     ${lessonFields}
   }
 `)
 
-export const postQuery = defineQuery(`
+export const lessonQuery = defineQuery(`
   *[_type == "lesson" && slug.current == $slug] [0] {
     content[]{
     ...,
@@ -90,7 +90,7 @@ export const postQuery = defineQuery(`
   }
 `)
 
-export const postPagesSlugs = defineQuery(`
+export const lessonPagesSlugs = defineQuery(`
   *[_type == "lesson" && defined(slug.current)]
   {"slug": slug.current}
 `)
@@ -99,6 +99,12 @@ export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+// Backwards compatibility exports
+export const allPostsQuery = allLessonsQuery
+export const morePostsQuery = moreLessonsQuery
+export const postQuery = lessonQuery
+export const postPagesSlugs = lessonPagesSlugs
 
 export const wordsQuery = defineQuery(`
   *[_type == "word"] | order(english asc) {
