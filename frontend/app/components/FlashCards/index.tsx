@@ -88,7 +88,7 @@ function reducer(state: State, action: Action): State {
         ? state.wrongTail
         : [...state.wrongTail, {...state.currentCard!}]
 
-      let newIdx = state.idx + 1
+      const newIdx = state.idx + 1
       let newQueue = state.queue
       let done = false
 

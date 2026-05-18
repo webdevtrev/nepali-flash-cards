@@ -26,6 +26,16 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
             return item.child(S.documentTypeList('word').title(title).showIcons(false))
           }
 
+          if (listItem.getId() === 'phrase') {
+            return item.child(S.documentTypeList('phrase').title(title).showIcons(false))
+          }
+
+          if (listItem.getId() === 'wordOfTheDay') {
+            return item.child(
+              S.documentTypeList('wordOfTheDay').title('Word of the Days').showIcons(false),
+            )
+          }
+
           return item
         }),
       // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list

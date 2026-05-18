@@ -15,7 +15,7 @@ interface Word {
   english: string
   romanized: string
   devanagari: string
-  pronunciation?: string
+  pronunciation: string
   tags?: string[]
 }
 

@@ -1,8 +1,10 @@
 import {person} from './documents/person'
 import {page} from './documents/page'
-import {lesson} from './documents/post'
+import {lesson} from './documents/lesson'
 import {tags} from './documents/tags'
 import {word} from './documents/word'
+import {phrase} from './documents/phrase'
+import {wordOfTheDay} from './documents/wordOfTheDay'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
@@ -22,6 +24,8 @@ export const schemaTypes = [
   person,
   tags,
   word,
+  phrase,
+  wordOfTheDay,
   // Objects
   button,
   blockContent,

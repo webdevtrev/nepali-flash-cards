@@ -53,9 +53,9 @@ Open the Studio running locally in your browser on [http://localhost:3333](http:
 
 #### 1. Publish your first document
 
-The template comes pre-defined with a schema containing `Page`, `Post`, `Person`, and `Settings` document types.
+The template comes pre-defined with a schema containing `Page`, `Lesson`, `Person`, and `Settings` document types.
 
-From the Studio, click "+ Create" and select the `Post` document type. Go ahead and create and publish the document.
+From the Studio, click "+ Create" and select the `Lesson` document type. Go ahead and create and publish the document.
 
 Your content should now appear in your Next.js app ([http://localhost:3000](http://localhost:3000)) as well as in the Studio on the "Presentation" Tab
 
@@ -69,7 +69,7 @@ npm run import-sample-data
 
 #### 3. Extending the Sanity schema
 
-The schema for the `Post` document type is defined in the `studio/src/schemaTypes/post.ts` file. You can [add more document types](https://www.sanity.io/docs/studio/schema-types) to the schema to suit your needs.
+The schema for the `Lesson` document type is defined in the `studio/src/schemaTypes/documents/lesson.ts` file. You can [add more document types](https://www.sanity.io/docs/studio/schema-types) to the schema to suit your needs.
 
 ### Deploying your application and inviting editors
 
@@ -83,14 +83,22 @@ Back in your Studio directory (`/studio`), run the following command to deploy y
 npx sanity deploy
 ```
 
-#### 2. Deploy Next.js app to Vercel
+#### 2. Deploy Next.js app to Vercel or Netlify
 
-You have the freedom to deploy your Next.js app to your hosting provider of choice. With Vercel and GitHub being a popular choice, we'll cover the basics of that approach.
+You have the freedom to deploy your Next.js app to your hosting provider of choice. With Vercel and GitHub being a popular choice, we'll cover the basics of that approach, plus the Netlify setup for this repo.
 
 1. Create a GitHub repository from this project. [Learn more](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github).
 2. Create a new Vercel project and connect it to your Github repository.
 3. Set the `Root Directory` to your Next.js app.
 4. Configure your Environment Variables.
+
+#### 3. Deploy Next.js app to Netlify
+
+1. Create a new Netlify site from this repository.
+2. Set the **Base directory** to `frontend`.
+3. Use `npm run build` as the build command.
+4. Add the same Sanity environment variables used locally, especially `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`, `NEXT_PUBLIC_SANITY_STUDIO_URL`, and `SANITY_API_WRITE_TOKEN`.
+5. Netlify will pick up the scheduled function in `netlify/functions/promote-word-of-the-day.ts` to promote due Word of the Day documents.
 
 #### 3. Invite a collaborator
 

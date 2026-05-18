@@ -26,7 +26,7 @@ export function resolveOpenGraphImage(
   return {url, alt: (image as {alt?: string})?.alt || '', width, height}
 }
 
-// Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
+// Depending on the type of link, we need to fetch the corresponding page, lesson, or URL.  Otherwise return null.
 export function linkResolver(link: Link | DereferencedLink | undefined) {
   if (!link) return null
 
@@ -42,9 +42,9 @@ export function linkResolver(link: Link | DereferencedLink | undefined) {
       if (link?.page && typeof link.page === 'string') {
         return `/${link.page}`
       }
-    case 'post':
-      if (link?.post && typeof link.post === 'string') {
-        return `/posts/${link.post}`
+    case 'lesson':
+      if (link?.lesson && typeof link.lesson === 'string') {
+        return `/lessons/${link.lesson}`
       }
     default:
       return null
