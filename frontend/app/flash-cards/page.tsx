@@ -16,7 +16,7 @@ interface Word {
   romanized: string
   devanagari: string
   pronunciation: string
-  tags?: string[]
+  tags?: string[] | null
 }
 
 export default function FlashCardsPage() {

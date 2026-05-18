@@ -9,7 +9,7 @@ export interface WordEntry {
   romanized: string
   pronunciation?: string
   devanagari?: string
-  tags?: string[]
+  tags?: string[] | null
 }
 
 interface Card {
