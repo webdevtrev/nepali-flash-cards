@@ -849,6 +849,25 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 
+// Source: sanity/lib/queries.ts
+// Variable: wordsQuery
+// Query: *[_type == "word"] | order(english asc) {    english,    romanized,    devanagari,    pronunciation,    "tags": tags[]->_id,  }
+export type WordsQueryResult = Array<{
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string | null
+  tags: Array<string> | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: tagsQuery
+// Query: *[_type == "tags"] | order(title asc) {    _id,    title,  }
+export type TagsQueryResult = Array<{
+  _id: string
+  title: string
+}>
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
@@ -861,5 +880,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult
     '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
+    '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
+    '\n  *[_type == "tags"] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
   }
 }
