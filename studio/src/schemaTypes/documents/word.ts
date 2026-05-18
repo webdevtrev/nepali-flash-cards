@@ -27,12 +27,18 @@ export const word = defineType({
       name: 'pronunciation',
       title: 'Pronunciation',
       type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
       of: [{type: 'reference', to: {type: 'tags'}}],
+    }),
+    defineField({
+      name: 'migrateToPhrase',
+      title: 'Migrate to Phrase',
+      type: 'boolean',
     }),
   ],
   preview: {
