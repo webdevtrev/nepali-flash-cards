@@ -1,0 +1,53 @@
+import {defineField, defineType} from 'sanity'
+
+export const phrase = defineType({
+  name: 'phrase',
+  title: 'Phrase',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'english',
+      title: 'English',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'romanized',
+      title: 'Romanized',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'devanagari',
+      title: 'Devanagari',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'pronunciation',
+      title: 'Pronunciation',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'tags'}}],
+    }),
+  ],
+  preview: {
+    select: {
+      english: 'english',
+      romanized: 'romanized',
+      devanagari: 'devanagari',
+    },
+    prepare(selection) {
+      const {english, romanized, devanagari} = selection
+      return {
+        title: english,
+        subtitle: `${romanized} | ${devanagari}`,
+      }
+    },
+  },
+})
