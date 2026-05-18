@@ -1,0 +1,9 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
+
+[functions."promote-word-of-the-day"]
+  schedule = "* * * * *"

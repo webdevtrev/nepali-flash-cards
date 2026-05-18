@@ -35,6 +35,11 @@ export const word = defineType({
       type: 'array',
       of: [{type: 'reference', to: {type: 'tags'}}],
     }),
+    defineField({
+      name: 'migrateToPhrase',
+      title: 'Migrate to Phrase',
+      type: 'boolean',
+    }),
   ],
   preview: {
     select: {
