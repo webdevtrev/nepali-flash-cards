@@ -1,4 +1,5 @@
 import {createClient} from '@sanity/client'
+import {uuid} from '@sanity/uuid'
 
 import {apiVersion, dataset, projectId} from './api'
 
@@ -26,8 +27,30 @@ type DueWordOfTheDay = {
   scheduledFor: string
   word?: {
     _id: string
-    tagIds?: string[]
   }
+}
+
+async function addTagIfMissing(
+  client: ReturnType<typeof createClient>,
+  documentId: string,
+  tagId: string,
+) {
+  const existingTagIds = await client.fetch<string[]>(
+    /* groq */ `*[_id == $documentId][0].tags[]._ref`,
+    {documentId},
+  )
+
+  if ((existingTagIds ?? []).includes(tagId)) {
+    return false
+  }
+
+  await client
+    .patch(documentId)
+    .setIfMissing({tags: []})
+    .append('tags', [{_key: uuid(), _type: 'reference', _ref: tagId}])
+    .commit()
+
+  return true
 }
 
 export async function promoteDueWordOfTheDay(now = new Date()) {
@@ -43,7 +66,6 @@ export async function promoteDueWordOfTheDay(now = new Date()) {
         scheduledFor,
         word-> {
           _id,
-          "tagIds": tags[]._ref,
         }
       }
     `,
@@ -81,12 +103,27 @@ export async function promoteDueWordOfTheDay(now = new Date()) {
     const shouldKeep = keepEntry?._id === entry._id
 
     if (entry.word?._id) {
-      const currentTagIds = entry.word.tagIds ?? []
-      if (!currentTagIds.includes(tagId)) {
-        await client
-          .patch(entry.word._id)
-          .append('tags', [{_type: 'reference', _ref: tagId}])
-          .commit()
+      const publishedWordId = entry.word._id
+      const draftWordId = `drafts.${publishedWordId}`
+
+      const existingWordDocumentIds = await client.fetch<string[]>(
+        /* groq */ `*[_id in [$publishedWordId, $draftWordId]]._id`,
+        {publishedWordId, draftWordId},
+      )
+
+      const wordDocumentIdsToPatch =
+        existingWordDocumentIds.length > 0 ? existingWordDocumentIds : [publishedWordId]
+
+      let addedToAnyDocument = false
+
+      for (const wordDocumentId of wordDocumentIdsToPatch) {
+        const added = await addTagIfMissing(client, wordDocumentId, tagId)
+        if (added) {
+          addedToAnyDocument = true
+        }
+      }
+
+      if (addedToAnyDocument) {
         promoted += 1
       }
     }

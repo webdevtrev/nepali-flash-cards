@@ -127,11 +127,46 @@ export type Button = {
   link?: Link
 }
 
+export type WordReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'word'
+}
+
+export type WordOfTheDay = {
+  _id: string
+  _type: 'wordOfTheDay'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  word: WordReference
+  scheduledFor: string
+  notes?: string
+}
+
 export type TagsReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'tags'
+}
+
+export type Phrase = {
+  _id: string
+  _type: 'phrase'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
+  tags?: Array<
+    {
+      _key: string
+    } & TagsReference
+  >
 }
 
 export type Word = {
@@ -149,6 +184,7 @@ export type Word = {
       _key: string
     } & TagsReference
   >
+  migrateToPhrase?: boolean
 }
 
 export type Tags = {
@@ -533,7 +569,10 @@ export type AllSanitySchemaTypes =
   | BlockContentTextOnly
   | BlockContent
   | Button
+  | WordReference
+  | WordOfTheDay
   | TagsReference
+  | Phrase
   | Word
   | Tags
   | Settings

@@ -122,3 +122,18 @@ export const tagsQuery = defineQuery(`
     title,
   }
 `)
+
+export const currentWordOfTheDayQuery = defineQuery(`
+  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {
+    _id,
+    scheduledFor,
+    notes,
+    word-> {
+      _id,
+      english,
+      romanized,
+      devanagari,
+      pronunciation,
+    }
+  }
+`)

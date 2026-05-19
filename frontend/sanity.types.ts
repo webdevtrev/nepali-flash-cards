@@ -907,6 +907,22 @@ export type TagsQueryResult = Array<{
   title: string
 }>
 
+// Source: sanity/lib/queries.ts
+// Variable: currentWordOfTheDayQuery
+// Query: *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {    _id,    scheduledFor,    notes,    word-> {      _id,      english,      romanized,      devanagari,      pronunciation,    }  }
+export type CurrentWordOfTheDayQueryResult = {
+  _id: string
+  scheduledFor: string
+  notes: string | null
+  word: {
+    _id: string
+    english: string
+    romanized: string
+    devanagari: string
+    pronunciation: string
+  }
+} | null
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
@@ -921,5 +937,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
     '\n  *[_type == "tags"] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
+    '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n    }\n  }\n': CurrentWordOfTheDayQueryResult
   }
 }
