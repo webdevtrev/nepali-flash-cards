@@ -18,8 +18,7 @@ export const wordOfTheDay = defineType({
       to: [{type: 'word'}],
       options: {
         filter: ({document}) => {
-          const currentWordId =
-            (document as {word?: {_ref?: string}} | undefined)?.word?._ref ?? ''
+          const currentWordId = (document as {word?: {_ref?: string}} | undefined)?.word?._ref ?? ''
 
           return {
             filter: '!($wordOfTheDayTagId in tags[]._ref) || _id == $currentWordId',
