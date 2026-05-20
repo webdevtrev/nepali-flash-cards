@@ -15,26 +15,26 @@
   font-size: 2.25rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
 }
 
 .subtitle {
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
 }
 
 .wordOfDayCard {
   margin-top: 2rem;
   padding: 1.25rem;
-  border: 1px solid var(--fc-border);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--fc-bg) 90%, var(--fc-fg) 10%);
+  background: var(--word-card-bg);
 }
 
 .wordOfDayHeading {
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
   margin-bottom: 0.75rem;
 }
 
@@ -42,27 +42,27 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
 }
 
 .wordRomanized {
   margin: 0.4rem 0;
   font-size: 1.2rem;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
 }
 
 .wordDevanagari {
   margin: 0.2rem 0;
   font-size: 1.3rem;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
 }
 
 .wordPronunciation {
   margin-top: 0.8rem;
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
 }
 
 .wordEmpty {
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
   margin: 0;
 }

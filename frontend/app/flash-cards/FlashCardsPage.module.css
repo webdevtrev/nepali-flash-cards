@@ -15,12 +15,12 @@
 .heading {
   font-size: 1.875rem;
   font-weight: 700;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .addButton {
-  background-color: var(--fc-accent);
+  background-color: var(--button-primary-bg);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -32,15 +32,15 @@
 }
 
 .addButton:hover {
-  background-color: var(--fc-accent-weak);
+  background-color: var(--button-primary-hover);
 }
 
 .error {
-  color: var(--fc-bad);
+  color: var(--color-error);
   text-align: center;
 }
 
 .loading {
   text-align: center;
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
 }

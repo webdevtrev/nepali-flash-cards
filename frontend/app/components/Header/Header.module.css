@@ -4,9 +4,9 @@
   height: 6rem;
   inset-inline: 0;
   top: 0;
-  background: color-mix(in srgb, var(--fc-bg) 80%, transparent);
+  background: color-mix(in srgb, var(--color-background) 80%, transparent);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid color-mix(in srgb, var(--fc-fg) 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, transparent);
 }
 
 .inner {
@@ -20,12 +20,17 @@
 }
 
 .title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  color: var(--fc-fg);
+  color: var(--color-text-primary);
   transition: opacity 0.15s ease;
+}
+
+.logo {
+  height: clamp(3rem, 6vw, 4rem);
+  width: auto;
+  display: block;
 }
 
 .title:hover {

@@ -3,7 +3,7 @@
   gap: 6px;
   align-items: center;
   font-size: 0.9rem;
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
   cursor: pointer;
 }
 
@@ -12,7 +12,7 @@
   width: 44px;
   height: 28px;
   border-radius: 99px;
-  background: var(--fc-accent-weak);
+  background: var(--progress-bg);
   position: relative;
   cursor: pointer;
   border: 1px solid rgba(127, 127, 127, 0.25);
@@ -20,7 +20,7 @@
 }
 
 .tog:checked {
-  background: var(--fc-accent);
+  background: var(--color-info);
 }
 
 .tog::before {
@@ -33,7 +33,7 @@
   background: #fff;
   border-radius: 50%;
   transition: transform 0.18s ease;
-  box-shadow: var(--fc-shadow);
+  box-shadow: var(--shadow-md);
 }
 
 .tog:checked::before {

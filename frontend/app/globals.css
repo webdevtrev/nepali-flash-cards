@@ -1,29 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Noto+Sans+Devanagari:wght@100..900&display=swap');
 :root {
-  --fc-bg: #ffffff;
-  --fc-fg: #111111;
-  --fc-muted: #666;
-  --fc-card: #f7f7f9;
-  --fc-accent: #4b7bec;
-  --fc-accent-weak: #dfe7ff;
-  --fc-good: #2ecc71;
-  --fc-bad: #e74c3c;
-  --fc-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --color-primary: #1f2a30;
+  --color-primary-light: #32424a;
+  --color-background: #f7f5f1;
+  --color-surface: #ffffff;
+  --color-border: #e7e2da;
+
+  --color-flag-blue: #5c8fbf;
+  --color-flag-red: #c95b4a;
+  --color-flag-gold: #d8a23a;
+  --color-flag-green: #6f8f7a;
+  --color-flag-cream: #f2e7cc;
+
+  --color-text-primary: #1f2a30;
+  --color-text-secondary: #5e6a70;
+  --color-text-muted: #8b949a;
+  --color-text-inverse: #ffffff;
+
+  --color-success: #6f8f7a;
+  --color-warning: #d8a23a;
+  --color-error: #c95b4a;
+  --color-info: #5c8fbf;
+
+  --font-logo: 'Marcellus SC', serif;
+  --font-heading: 'Fraunces', serif;
+  --font-body: var(--font-inter), 'Inter', sans-serif;
+  --font-mono:
+    var(--font-ibm-plex-mono), 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-nepali: 'Noto Sans Devanagari', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;
+  --tracking-logo: 0.18em;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 8px 24px rgba(31, 42, 48, 0.08);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  --container-width: 1200px;
+  --nav-height: 80px;
+
+  --button-primary-bg: var(--color-primary);
+  --button-primary-text: var(--color-text-inverse);
+  --button-primary-hover: var(--color-primary-light);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--color-flag-blue);
+  --button-secondary-text: var(--color-flag-blue);
+
+  --card-bg: var(--color-surface);
+  --card-border: var(--color-border);
+  --card-shadow: var(--shadow-md);
+
+  --quiz-correct: #dff2e5;
+  --quiz-correct-border: #6f8f7a;
+  --quiz-wrong: #f8e0dc;
+  --quiz-wrong-border: #c95b4a;
+
+  --flashcard-bg: #fffdf8;
+  --flashcard-border: #ece5d8;
+
+  --word-card-bg: #f9f4ea;
+
+  --progress-bg: #e8e2d7;
+  --progress-fill: var(--color-flag-green);
 }
 
-.fc-dark,
 html.dark {
-  --fc-bg: #0f1115;
-  --fc-fg: #f5f7ff;
-  --fc-muted: #aab1c6;
-  --fc-card: #171a21;
-  --fc-accent: #7aa2ff;
-  --fc-accent-weak: #233055;
-  --fc-good: #47e6a1;
-  --fc-bad: #ff6b6b;
-  --fc-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  --color-primary: #f7f5f1;
+  --color-background: #12181c;
+  --color-surface: #1b2429;
+  --color-border: #2a343a;
+
+  --color-text-primary: #f7f5f1;
+  --color-text-secondary: #c4ccd0;
+  --color-text-muted: #8b949a;
+
+  --card-bg: #1b2429;
+  --flashcard-bg: #202a2f;
+  --word-card-bg: #202a2f;
+
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
-html.dark body {
-  background-color: var(--fc-bg);
-  color: var(--fc-fg);
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+:lang(ne),
+:lang(ne-NP),
+[data-lang='ne'] {
+  font-family: var(--font-nepali);
 }

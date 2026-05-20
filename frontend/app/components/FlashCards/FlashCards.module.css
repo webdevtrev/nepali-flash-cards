@@ -1,6 +1,6 @@
 .root {
-  background: var(--fc-bg);
-  color: var(--fc-fg);
+  background: var(--color-background);
+  color: var(--color-text-primary);
   font-family:
     ui-sans-serif,
     system-ui,
@@ -41,28 +41,28 @@
 
 .progressWrap {
   height: 10px;
-  background: var(--fc-accent-weak);
+  background: var(--progress-bg);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .bar {
   height: 100%;
-  background: var(--fc-accent);
+  background: var(--progress-fill);
   transition: width 0.3s ease;
 }
 
 .small {
   font-size: 0.85rem;
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
 }
 
 .card {
   width: min(680px, 92vw);
   min-height: 36vh;
-  background: var(--fc-card);
+  background: var(--flashcard-bg);
   border-radius: 18px;
-  box-shadow: var(--fc-shadow);
+  box-shadow: var(--card-shadow);
   padding: 24px 18px;
   display: flex;
   flex-direction: column;
@@ -74,7 +74,7 @@
 }
 
 .card:focus-visible {
-  outline: 2px solid var(--fc-accent);
+  outline: 2px solid var(--color-info);
 }
 
 .hint {
@@ -94,7 +94,7 @@
 
 .pron {
   font-size: clamp(1rem, 4.2vw, 1.15rem);
-  color: var(--fc-muted);
+  color: var(--color-text-muted);
   margin-top: 6px;
 }
 
@@ -108,12 +108,12 @@
 .btn {
   border-radius: 12px;
   border: 1px solid rgba(127, 127, 127, 0.25);
-  background: var(--fc-card);
-  color: var(--fc-fg);
+  background: var(--card-bg);
+  color: var(--color-text-primary);
   padding: 10px 16px;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: var(--fc-shadow);
+  box-shadow: var(--card-shadow);
   transition: transform 0.06s ease;
   min-width: 110px;
 }
@@ -123,13 +123,13 @@
 }
 
 .btnPrimary {
-  background: var(--fc-accent);
+  background: var(--button-primary-bg);
   color: white;
   border-color: transparent;
 }
 
 .btnBad {
-  background: var(--fc-bad);
+  background: var(--color-error);
   color: white;
   border-color: transparent;
 }
@@ -139,10 +139,10 @@
   flex-direction: column;
   gap: 14px;
   align-items: center;
-  background: var(--fc-card);
+  background: var(--card-bg);
   padding: 28px;
   border-radius: 16px;
-  box-shadow: var(--fc-shadow);
+  box-shadow: var(--card-shadow);
   width: min(680px, 92vw);
 }
 
@@ -154,11 +154,11 @@
 }
 
 .good {
-  color: var(--fc-good);
+  color: var(--color-success);
 }
 
 .bad {
-  color: var(--fc-bad);
+  color: var(--color-error);
 }
 
 .desktop {
