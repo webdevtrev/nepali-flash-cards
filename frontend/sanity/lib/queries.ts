@@ -117,7 +117,7 @@ export const wordsQuery = defineQuery(`
 `)
 
 export const tagsQuery = defineQuery(`
-  *[_type == "tags"] | order(title asc) {
+  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {
     _id,
     title,
   }

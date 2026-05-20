@@ -1,6 +1,8 @@
 import {format, parseISO} from 'date-fns'
 import {defineField, defineType} from 'sanity'
 
+const WORD_OF_THE_DAY_TAG_ID = 'word-of-the-day'
+
 export const wordOfTheDay = defineType({
   name: 'wordOfTheDay',
   title: 'Word of the Day',
@@ -14,6 +16,20 @@ export const wordOfTheDay = defineType({
       title: 'Word',
       type: 'reference',
       to: [{type: 'word'}],
+      options: {
+        filter: ({document}) => {
+          const currentWordId =
+            (document as {word?: {_ref?: string}} | undefined)?.word?._ref ?? ''
+
+          return {
+            filter: '!($wordOfTheDayTagId in tags[]._ref) || _id == $currentWordId',
+            params: {
+              wordOfTheDayTagId: WORD_OF_THE_DAY_TAG_ID,
+              currentWordId,
+            },
+          }
+        },
+      },
       validation: (rule) => rule.required(),
     }),
     defineField({

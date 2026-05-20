@@ -901,7 +901,7 @@ export type WordsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: tagsQuery
-// Query: *[_type == "tags"] | order(title asc) {    _id,    title,  }
+// Query: *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {    _id,    title,  }
 export type TagsQueryResult = Array<{
   _id: string
   title: string
@@ -936,7 +936,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
-    '\n  *[_type == "tags"] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
+    '\n  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
     '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n    }\n  }\n': CurrentWordOfTheDayQueryResult
   }
 }

@@ -1,6 +1,9 @@
+import Link from 'next/link'
 import styles from './HomePage.module.css'
 import {sanityFetch} from '@/sanity/lib/live'
 import {currentWordOfTheDayQuery} from '@/sanity/lib/queries'
+
+const WORD_OF_THE_DAY_TAG_ID = 'word-of-the-day'
 
 type CurrentWordOfTheDay = {
   _id: string
@@ -47,6 +50,12 @@ export default async function Page() {
                   Pronunciation: {wordOfTheDay.word.pronunciation}
                 </p>
               ) : null}
+              <Link
+                href={`/flash-cards?tag=${WORD_OF_THE_DAY_TAG_ID}`}
+                className={styles.wordOfDayLink}
+              >
+                Practice Word of the Day
+              </Link>
             </>
           ) : (
             <p className={styles.wordEmpty}>No word has been promoted yet.</p>
