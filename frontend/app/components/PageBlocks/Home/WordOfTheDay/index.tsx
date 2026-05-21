@@ -88,7 +88,7 @@ export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
           <PiSunDim className={styles.sunIcon} aria-hidden="true" />
           Word of the Day
         </h2>
-        {wordOfTheDay?.word.audio && (
+        {wordOfTheDay?.word?.audio && (
           <button
             type="button"
             className={styles.speakerButton}
