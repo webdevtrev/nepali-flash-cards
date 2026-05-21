@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from 'react'
+import {Suspense, useEffect, useState} from 'react'
 import {useSearchParams} from 'next/navigation'
 import {client} from '@/sanity/lib/client'
 import {wordsQuery, tagsQuery} from '@/sanity/lib/queries'
@@ -31,6 +31,20 @@ const wordsByTagQuery = `
 `
 
 export default function FlashCardsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className={styles.wrapper}>
+          <h1 className={styles.heading}>Loading...</h1>
+        </div>
+      }
+    >
+      <FlashCardsPageContent />
+    </Suspense>
+  )
+}
+
+function FlashCardsPageContent() {
   const searchParams = useSearchParams()
   const [words, setWords] = useState<Word[]>([])
   const [tags, setTags] = useState<Tag[]>([])
