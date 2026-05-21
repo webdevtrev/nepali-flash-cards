@@ -1,8 +1,14 @@
 .section {
   min-height: 100vh;
-  padding-top: 6rem;
+  margin-left: 0;
+  padding: 2rem 1rem;
 }
 
 .main {
   /* layout container for page content */
+}
+@media (min-width: 768px) {
+  .section {
+    margin-left: 20vw;
+  }
 }

@@ -1,0 +1,102 @@
+.wordOfDayCard {
+  margin-top: 2rem;
+  border-radius: 16px;
+  border: 2px solid #e0c080;
+  overflow: hidden;
+}
+
+.wordOfDayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  background-color: rgb(254, 245, 223);
+  padding: 0.5rem;
+}
+
+.wordOfDayHeading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a07a30;
+  margin: 0;
+}
+.wordOfDayContent {
+  padding: 1.25rem 1.5rem 1rem;
+}
+
+.sunIcon {
+  font-size: 1.1rem;
+  color: #e0a020;
+  flex-shrink: 0;
+}
+
+.speakerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #d6c8a0;
+  border-radius: 8px;
+  background: #fff8e6;
+  color: #8a7040;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.15s;
+}
+
+.speakerButton:hover {
+  background: #f0e8cc;
+}
+
+.wordDevanagari {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+.wordRomanized {
+  font-size: 1.2rem;
+  color: #555;
+  margin-left: 0.5rem;
+}
+.wordRomanizedEnglish {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 0.5rem;
+}
+
+.wordNotes {
+  font-size: 0.95rem;
+  color: #777;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.wordOfDayFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.wordOfDayLink {
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.wordOfDayLink:hover {
+  color: #374151;
+  text-decoration: underline;
+}
+
+.wordEmpty {
+  color: #a07a30;
+  margin: 0;
+}

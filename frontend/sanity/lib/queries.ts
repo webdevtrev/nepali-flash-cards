@@ -112,6 +112,7 @@ export const wordsQuery = defineQuery(`
     romanized,
     devanagari,
     pronunciation,
+    "audio": audio.asset->url,
     "tags": tags[]->_id,
   }
 `)
@@ -134,6 +135,7 @@ export const currentWordOfTheDayQuery = defineQuery(`
       romanized,
       devanagari,
       pronunciation,
+      "audio": audio.asset->url,
     }
   }
 `)

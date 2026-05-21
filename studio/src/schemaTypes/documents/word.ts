@@ -30,6 +30,14 @@ export const word = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'audio',
+      title: 'Audio Pronunciation',
+      type: 'file',
+      options: {
+        accept: 'audio/*',
+      },
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',

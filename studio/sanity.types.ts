@@ -169,6 +169,13 @@ export type Phrase = {
   >
 }
 
+export type SanityFileAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+}
+
 export type Word = {
   _id: string
   _type: 'word'
@@ -179,6 +186,11 @@ export type Word = {
   romanized: string
   devanagari: string
   pronunciation: string
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
   tags?: Array<
     {
       _key: string
@@ -573,6 +585,7 @@ export type AllSanitySchemaTypes =
   | WordOfTheDay
   | TagsReference
   | Phrase
+  | SanityFileAssetReference
   | Word
   | Tags
   | Settings

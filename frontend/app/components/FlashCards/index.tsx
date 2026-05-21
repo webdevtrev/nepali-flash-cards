@@ -148,17 +148,7 @@ export default function FlashCards({words}: FlashCardsProps) {
 
   const [state, dispatch] = useReducer(reducer, undefined, () => buildInitialState(cards.current))
 
-  const {
-    queue,
-    idx,
-    showingFront,
-    currentCard,
-    stats,
-    sideIsEnglish,
-    showDevanagari,
-    forceEnglish,
-    done,
-  } = state
+  const {queue, idx, showingFront, currentCard, stats, sideIsEnglish, forceEnglish, done} = state
 
   const total = queue.length + (state.wrongTail.length > 0 && idx < queue.length ? 0 : 0)
   const queueTotal = queue.length
@@ -175,11 +165,12 @@ export default function FlashCards({words}: FlashCardsProps) {
     if (showingFront) {
       primaryText = sideIsEnglish ? en : nep
       pronLine = sideIsEnglish ? '' : pron
+      devLine = sideIsEnglish ? '' : dev
     } else {
       primaryText = sideIsEnglish ? nep : en
       pronLine = sideIsEnglish ? pron : ''
+      devLine = sideIsEnglish ? dev : ''
     }
-    if (showDevanagari && dev) devLine = dev
   }
 
   const handleKeyDown = useCallback(
@@ -206,11 +197,6 @@ export default function FlashCards({words}: FlashCardsProps) {
     <div className={styles.root}>
       {/* Toolbar */}
       <div className={styles.toolbar}>
-        <Toggle
-          checked={showDevanagari}
-          onChange={() => dispatch({type: 'TOGGLE_DEV'})}
-          label="Devanagari"
-        />
         <Toggle
           checked={forceEnglish}
           onChange={() => dispatch({type: 'TOGGLE_FORCE_ENGLISH'})}
@@ -250,7 +236,6 @@ export default function FlashCards({words}: FlashCardsProps) {
             role="button"
             aria-label="Flip card"
           >
-            <div className={`${styles.hint} ${styles.small}`}>← Flip · → Next · W Wrong</div>
             {devLine && <div className={styles.dev}>{devLine}</div>}
             <div className={styles.side}>{primaryText || 'Tap to flip'}</div>
             {pronLine && <div className={styles.pron}>{pronLine}</div>}

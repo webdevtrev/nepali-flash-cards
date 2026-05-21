@@ -2,16 +2,14 @@ import './globals.css'
 
 import {SpeedInsights} from '@vercel/speed-insights/next'
 import type {Metadata} from 'next'
-import {Inter, IBM_Plex_Mono} from 'next/font/google'
+import {Cinzel, Fraunces, IBM_Plex_Mono, Inter, Noto_Sans_Devanagari} from 'next/font/google'
 import {draftMode} from 'next/headers'
-import {toPlainText} from 'next-sanity'
 import {VisualEditing} from 'next-sanity/visual-editing'
 import {Toaster} from 'sonner'
 
 import DraftModeToast from '@/app/components/DraftModeToast'
-import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
-import * as demo from '@/sanity/lib/demo'
+import HeaderMobile from '@/app/components/HeaderMobile'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
@@ -28,8 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // Metadata should never contain stega
     stega: false,
   })
-  const title = settings?.title || demo.title
-  const description = settings?.description || demo.description
+  const title = 'Learn Nepali'
+  const description = 'A Nepali language learning platform'
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
   let metadataBase: URL | undefined = undefined
@@ -42,11 +40,8 @@ export async function generateMetadata(): Promise<Metadata> {
   }
   return {
     metadataBase,
-    title: {
-      template: `%s | ${title}`,
-      default: title,
-    },
-    description: toPlainText(description),
+    title,
+    description,
     openGraph: {
       images: ogImage ? [ogImage] : [],
     },
@@ -59,6 +54,18 @@ const inter = Inter({
   display: 'swap',
 })
 
+const cinzel = Cinzel({
+  variable: '--font-cinzel',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 const ibmPlexMono = IBM_Plex_Mono({
   variable: '--font-ibm-plex-mono',
   weight: ['400'],
@@ -66,11 +73,20 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: 'swap',
 })
 
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  variable: '--font-noto-sans-devanagari',
+  subsets: ['devanagari'],
+  display: 'swap',
+})
+
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${cinzel.variable} ${fraunces.variable} ${ibmPlexMono.variable} ${notoSansDevanagari.variable}`}
+    >
       <body>
         <section className={layoutStyles.section}>
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
@@ -85,6 +101,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
           {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
           <SanityLive onError={handleError} />
           <Header />
+          <HeaderMobile />
           <main className={layoutStyles.main}>{children}</main>
         </section>
         <SpeedInsights />
