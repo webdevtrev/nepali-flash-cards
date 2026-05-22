@@ -42,6 +42,9 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase,
     title,
     description,
+    appleWebApp: {
+      title,
+    },
     openGraph: {
       images: ogImage ? [ogImage] : [],
     },

@@ -21,7 +21,8 @@ export const wordOfTheDay = defineType({
           const currentWordId = (document as {word?: {_ref?: string}} | undefined)?.word?._ref ?? ''
 
           return {
-            filter: '!(defined(tags) && $wordOfTheDayTagId in tags[]._ref) || _id == $currentWordId',
+            filter:
+              '!(defined(tags) && $wordOfTheDayTagId in tags[]._ref) || _id == $currentWordId',
             params: {
               wordOfTheDayTagId: WORD_OF_THE_DAY_TAG_ID,
               currentWordId,

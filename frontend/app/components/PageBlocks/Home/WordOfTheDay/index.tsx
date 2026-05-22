@@ -37,7 +37,6 @@ export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
         audioElementRef.current.pause()
         audioElementRef.current.currentTime = 0
       }
-      setIsPlaying(false)
       return
     }
 
@@ -61,18 +60,15 @@ export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
     }
   }, [audioUrl])
 
-  const toggleAudioPlayback = async () => {
+  const playAudioFromBeginning = async () => {
     const audio = audioElementRef.current
     if (!audio) {
       return
     }
 
-    if (isPlaying) {
-      audio.pause()
-      return
-    }
-
     try {
+      audio.pause()
+      audio.currentTime = 0
       await audio.play()
       setIsPlaying(true)
     } catch (error) {
@@ -92,9 +88,9 @@ export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
           <button
             type="button"
             className={styles.speakerButton}
-            aria-label={isPlaying ? 'Pause pronunciation audio' : 'Listen to pronunciation'}
+            aria-label="Play pronunciation from beginning"
             aria-pressed={isPlaying}
-            onClick={toggleAudioPlayback}
+            onClick={playAudioFromBeginning}
           >
             <HiOutlineSpeakerWave />
           </button>

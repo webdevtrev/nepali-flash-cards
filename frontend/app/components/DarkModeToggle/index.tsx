@@ -4,21 +4,21 @@ import {useEffect, useState} from 'react'
 import Toggle from '@/app/components/Toggle'
 
 export default function DarkModeToggle() {
-  const [dark, setDark] = useState(false)
-
-  // Sync initial state from localStorage/html class
-  useEffect(() => {
+  const [dark, setDark] = useState(() => {
+    if (typeof window === 'undefined') {
+      return false
+    }
     const stored = localStorage.getItem('theme')
-    const isDark = stored ? stored === 'dark' : document.documentElement.classList.contains('dark')
-    setDark(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
-  }, [])
+    return stored ? stored === 'dark' : document.documentElement.classList.contains('dark')
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark)
+    localStorage.setItem('theme', dark ? 'dark' : 'light')
+  }, [dark])
 
   function toggle() {
-    const next = !dark
-    setDark(next)
-    document.documentElement.classList.toggle('dark', next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
+    setDark((previous) => !previous)
   }
 
   return <Toggle checked={dark} onChange={toggle} label="Dark" />

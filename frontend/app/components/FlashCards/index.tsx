@@ -1,6 +1,6 @@
 'use client'
 
-import {useCallback, useEffect, useReducer, useRef} from 'react'
+import {useCallback, useEffect, useMemo, useReducer} from 'react'
 import styles from './FlashCards.module.css'
 import Toggle from '@/app/components/Toggle'
 
@@ -144,9 +144,9 @@ interface FlashCardsProps {
 }
 
 export default function FlashCards({words}: FlashCardsProps) {
-  const cards = useRef<Card[]>(normalizeCards(words))
+  const cards = useMemo(() => normalizeCards(words), [words])
 
-  const [state, dispatch] = useReducer(reducer, undefined, () => buildInitialState(cards.current))
+  const [state, dispatch] = useReducer(reducer, cards, buildInitialState)
 
   const {queue, idx, showingFront, currentCard, stats, sideIsEnglish, forceEnglish, done} = state
 
@@ -204,7 +204,7 @@ export default function FlashCards({words}: FlashCardsProps) {
         />
         <button
           className={styles.btn}
-          onClick={() => dispatch({type: 'RESTART', queue: shuffle(cards.current)})}
+          onClick={() => dispatch({type: 'RESTART', queue: shuffle(cards)})}
         >
           Restart
         </button>
@@ -278,7 +278,7 @@ export default function FlashCards({words}: FlashCardsProps) {
           </div>
           <button
             className={`${styles.btn} ${styles.btnPrimary}`}
-            onClick={() => dispatch({type: 'RESTART', queue: shuffle(cards.current)})}
+            onClick={() => dispatch({type: 'RESTART', queue: shuffle(cards)})}
           >
             Restart
           </button>
