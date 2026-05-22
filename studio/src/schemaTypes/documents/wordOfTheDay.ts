@@ -35,7 +35,7 @@ export const wordOfTheDay = defineType({
     defineField({
       name: 'scheduledFor',
       title: 'Scheduled For',
-      type: 'datetime',
+      type: 'date',
       validation: (rule) => rule.required(),
     }),
     defineField({

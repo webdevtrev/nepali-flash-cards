@@ -98,31 +98,44 @@ async function addTagIfMissing(
  */
 export async function promoteDueWordOfTheDay(now = new Date()) {
   const client = getWriteClient()
+  // Compute an ISO timestamp for the start of tomorrow in America/New_York
+  // (midnight ET). This converts that local midnight to the corresponding
+  // UTC instant so we can compare absolute timestamps stored in Sanity.
+  function getTomorrowStartIsoInTimeZone(d: Date, timeZone = 'America/New_York') {
+    // Get the year/month/day in the target timezone for the provided date.
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    }).formatToParts(d)
+    const map = parts.reduce<Record<string, string>>((acc, p) => {
+      if (p.type !== 'literal') acc[p.type] = p.value
+      return acc
+    }, {})
 
-  // Hourly Netlify cron -> run only when it's midnight in America/New_York
-  try {
-    const hourInET = Number(
-      new Intl.DateTimeFormat('en-US', {
-        timeZone: 'America/New_York',
-        hour: 'numeric',
-        hour12: false,
-      }).format(now),
+    const year = Number(map.year)
+    const month = Number(map.month)
+    const day = Number(map.day)
+
+    // Determine the hour offset between UTC and the target timezone for
+    // the current instant. This yields 4 for EDT or 5 for EST.
+    const utcHour = Number(
+      new Intl.DateTimeFormat('en-US', {timeZone: 'UTC', hour: 'numeric', hour12: false}).format(d),
     )
+    const tzHour = Number(
+      new Intl.DateTimeFormat('en-US', {timeZone, hour: 'numeric', hour12: false}).format(d),
+    )
+    const offsetHours = (utcHour - tzHour + 24) % 24
 
-    if (Number.isFinite(hourInET) && hourInET !== 0) {
-      console.info && console.info('Skipping run — not midnight ET', {hourInET})
-      return {promoted: 0, deleted: 0, kept: 0, tagCreated: false}
-    }
-  } catch (err) {
-    // If timezone lookup fails for any reason, log and continue with UTC behavior
-    console.warn && console.warn('Timezone check failed — continuing with UTC run', err)
+    // Compute the UTC instant that corresponds to midnight of the next
+    // day in the target timezone by adding the offset hours to local
+    // midnight and constructing a UTC timestamp.
+    const utcMillis = Date.UTC(year, month - 1, day + 1, offsetHours, 0, 0)
+    return new Date(utcMillis).toISOString()
   }
 
-  // Compute an ISO timestamp for the start of tomorrow UTC. We only want
-  // entries scheduled strictly before tomorrow (i.e. due today and earlier).
-  const tomorrowStartIso = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1),
-  ).toISOString()
+  const tomorrowStartIso = getTomorrowStartIsoInTimeZone(now, 'America/New_York')
 
   console.info &&
     console.info('promoteDueWordOfTheDay run', {now: now.toISOString(), tomorrowStartIso})
