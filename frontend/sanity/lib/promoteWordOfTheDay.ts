@@ -99,6 +99,25 @@ async function addTagIfMissing(
 export async function promoteDueWordOfTheDay(now = new Date()) {
   const client = getWriteClient()
 
+  // Hourly Netlify cron -> run only when it's midnight in America/New_York
+  try {
+    const hourInET = Number(
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        hour: 'numeric',
+        hour12: false,
+      }).format(now),
+    )
+
+    if (Number.isFinite(hourInET) && hourInET !== 0) {
+      console.info && console.info('Skipping run — not midnight ET', {hourInET})
+      return {promoted: 0, deleted: 0, kept: 0, tagCreated: false}
+    }
+  } catch (err) {
+    // If timezone lookup fails for any reason, log and continue with UTC behavior
+    console.warn && console.warn('Timezone check failed — continuing with UTC run', err)
+  }
+
   // Compute an ISO timestamp for the start of tomorrow UTC. We only want
   // entries scheduled strictly before tomorrow (i.e. due today and earlier).
   const tomorrowStartIso = new Date(

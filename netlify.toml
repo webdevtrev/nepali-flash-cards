@@ -6,8 +6,7 @@
   directory = "netlify/functions"
 
 [functions."promote-word-of-the-day"]
-  # Run once daily timed to roughly midnight Eastern: 05:00 UTC runs at
-  # midnight EST (UTC-5) and 01:00 EDT (UTC-4) when daylight savings applies.
-  # If you prefer midnight EDT/00:00 during DST and 00:00 during standard
-  # time, use the hourly schedule with an in-function timeZone guard.
-  schedule = "0 5 * * *"
+  # Run hourly and rely on the function to gate execution to midnight ET.
+  # This avoids DST edge cases; the function will check America/New_York
+  # and only run its promotion logic when the hour in that timezone is 0.
+  schedule = "0 * * * *"
