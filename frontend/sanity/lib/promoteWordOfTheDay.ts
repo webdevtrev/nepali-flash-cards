@@ -155,7 +155,66 @@ export async function promoteDueWordOfTheDay(now = new Date()) {
     {tomorrowStartIso},
   )
 
-  console.info && console.info('Found due entries', {count: dueEntries.length})
+  console.info && console.info('Found due entries from GROQ', {count: dueEntries.length})
+
+  // Sanity can store `scheduledFor` as either a full ISO timestamp
+  // (e.g. "2026-05-24T14:05:00.000Z") or a date-only string
+  // (e.g. "2026-05-28"). Date-only values are interpreted by Sanity
+  // as midnight UTC for that date which can make them appear earlier
+  // than midnight in America/New_York (ET). To avoid promoting date-only
+  // scheduled entries early, treat date-only values as midnight in ET
+  // when deciding whether an entry is due.
+  function scheduledDateStringToUtcIso(dateStr: string, timeZone = 'America/New_York') {
+    // dateStr is expected in YYYY-MM-DD format
+    const [y, m, d] = dateStr.split('-').map(Number)
+
+    // Use midday UTC for the target date to reliably compute the
+    // timezone offset for that specific date (handles DST correctly).
+    const middayUtc = new Date(Date.UTC(y, m - 1, d, 12, 0, 0))
+
+    const utcHour = Number(
+      new Intl.DateTimeFormat('en-US', {timeZone: 'UTC', hour: 'numeric', hour12: false}).format(
+        middayUtc,
+      ),
+    )
+    const tzHour = Number(
+      new Intl.DateTimeFormat('en-US', {timeZone, hour: 'numeric', hour12: false}).format(
+        middayUtc,
+      ),
+    )
+
+    const offsetHours = (utcHour - tzHour + 24) % 24
+
+    // The UTC instant that corresponds to midnight (00:00) in the
+    // target timezone for the given date is UTC(year, month-1, day, offsetHours)
+    const utcMillis = Date.UTC(y, m - 1, d, offsetHours, 0, 0)
+    return new Date(utcMillis).toISOString()
+  }
+
+  // Normalize each fetched entry into an object with a computed
+  // `scheduledForIso` which respects date-only values as ET-midnight.
+  const normalizedEntries = dueEntries.map((entry) => {
+    const scheduledRaw = entry.scheduledFor
+    let scheduledForIso: string
+    if (typeof scheduledRaw === 'string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(scheduledRaw)) {
+      // date-only -> interpret as midnight in ET
+      scheduledForIso = scheduledDateStringToUtcIso(scheduledRaw)
+    } else {
+      // full ISO timestamp or other format -> let JS parse it as-is
+      scheduledForIso = new Date(scheduledRaw).toISOString()
+    }
+
+    return {...entry, scheduledForIso}
+  })
+
+  // Filter entries to those that are strictly before the ET-based cutoff
+  const filteredDueEntries = normalizedEntries.filter((e) => e.scheduledForIso < tomorrowStartIso)
+
+  console.info &&
+    console.info('Entries considered due after ET-normalization', {
+      original: dueEntries.length,
+      filtered: filteredDueEntries.length,
+    })
 
   // Nothing to do if no entries are due.
   if (dueEntries.length === 0) {
@@ -190,11 +249,11 @@ export async function promoteDueWordOfTheDay(now = new Date()) {
   // Choose the most-recent entry (last in time) that has an associated
   // word to keep; all other scheduled entries will be deleted. We reverse
   // the array because `dueEntries` is ordered oldest->newest.
-  const keepEntry = [...dueEntries].reverse().find((entry) => Boolean(entry.word?._id))
+  const keepEntry = [...filteredDueEntries].reverse().find((entry) => Boolean(entry.word?._id))
 
   console.debug && console.debug('Selected keepEntry', {keepEntryId: keepEntry?._id})
 
-  for (const entry of dueEntries) {
+  for (const entry of filteredDueEntries) {
     const shouldKeep = keepEntry?._id === entry._id
 
     console.info &&
