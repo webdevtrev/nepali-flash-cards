@@ -25,7 +25,7 @@ interface WordOfTheDayProps {
   tagId: string
 }
 
-export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
+export default function WordOfTheDay({wordOfTheDay}: WordOfTheDayProps) {
   const audioElementRef = useRef<HTMLAudioElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
@@ -112,7 +112,7 @@ export default function WordOfTheDay({wordOfTheDay, tagId}: WordOfTheDayProps) {
             <p className={styles.wordRomanizedEnglish}>{wordOfTheDay.word.english}</p>
             {wordOfTheDay.notes ? <p className={styles.wordNotes}>{wordOfTheDay.notes}</p> : null}
             <div className={styles.wordOfDayFooter}>
-              <Link href={`/words?tag=${tagId}`} className={styles.wordOfDayLink}>
+              <Link href={`/review/vocabulary/word-of-the-day`} className={styles.wordOfDayLink}>
                 Click to study
               </Link>
             </div>

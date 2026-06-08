@@ -1,8 +1,9 @@
-import {useEffect, useState} from 'react'
+'use client'
+import {useState} from 'react'
 import Card from '../Card'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import CardButton from '../CardButton/CardButton'
-import {FaArrowRotateLeft, FaArrowRotateRight, FaRegFaceSmile} from 'react-icons/fa6'
+import {FaArrowRotateLeft, FaArrowRotateRight, FaRegFaceSmile, FaRotate} from 'react-icons/fa6'
 type Word = {
   devanagari: string
   transliteration: string
@@ -10,31 +11,33 @@ type Word = {
 }
 type FlashCard =
   | {
-      type: 'devanagari'
       devanagari: string
       transliteration: string
       example: Word
     }
   | {
-      type: 'word'
       devanagari: string
       transliteration: string
       translation: string
       pronunciation: string
-      pronunciationAudioFile: string
+      audio: string
     }
 
 import styles from './FlashCards.module.css'
 import Devanagari from './components/Devanagari'
 import Word from './components/Word'
 type FlashCardsProps = {
+  type: 'devanagari' | 'word'
   cards?: FlashCard[]
+  className?: string
 }
 
-export default function FlashCards({cards}: FlashCardsProps) {
+export default function FlashCards({cards, type, className}: FlashCardsProps) {
   const [cardsState, setCardsState] = useState<FlashCard[] | undefined>(cards)
   const [flipped, setFlipped] = useState(false)
   const [currentCard, setCurrentCard] = useState(0)
+  const [answeredCount, setAnsweredCount] = useState(0)
+  const [correctCount, setCorrectCount] = useState(0)
 
   const again = () => {
     setCardsState((prev) => {
@@ -48,10 +51,15 @@ export default function FlashCards({cards}: FlashCardsProps) {
   }
   const nextCard = () => {
     setFlipped(false)
+    setAnsweredCount((prev) => prev + 1)
     setCurrentCard((prev) => prev + 1)
   }
+  const markCorrectAndNext = () => {
+    setCorrectCount((prev) => prev + 1)
+    nextCard()
+  }
   return (
-    <div className={styles.container}>
+    <div className={[styles.container, className].filter(Boolean).join(' ')}>
       <span>
         {Math.min(currentCard + 1, cardsState?.length || 0)} / {cardsState?.length}
       </span>
@@ -62,14 +70,11 @@ export default function FlashCards({cards}: FlashCardsProps) {
             <div className={styles.testingSide}>
               <span
                 lang="ne"
-                className={[
-                  styles.devanagari,
-                  cardsState?.[currentCard]?.type === 'devanagari' ? styles.large : '',
-                ].join(' ')}
+                className={[styles.devanagari, type === 'devanagari' ? styles.large : ''].join(' ')}
               >
                 {cardsState?.[currentCard]?.devanagari}
               </span>
-              {cardsState?.[currentCard]?.type === 'word' && (
+              {type === 'word' && (
                 <span className={styles.transliteration}>
                   {cardsState[currentCard].transliteration}
                 </span>
@@ -77,19 +82,23 @@ export default function FlashCards({cards}: FlashCardsProps) {
             </div>
           ) : (
             <>
-              {cardsState?.[currentCard]?.type === 'devanagari' ? (
-                <Devanagari {...cardsState[currentCard]} />
-              ) : null}
-              {cardsState?.[currentCard]?.type === 'word' ? (
-                <Word {...cardsState[currentCard]} />
-              ) : null}
+              {type === 'devanagari' ? <Devanagari {...cardsState[currentCard]} /> : null}
+              {type === 'word' ? <Word {...cardsState[currentCard]} /> : null}
             </>
           )}
         </Card>
       ) : (
-        <Card className={styles.card}>
-          <h2>All done!</h2>
-          <p>You've gone through all the cards.</p>
+        <Card className={[styles.card].join(' ')}>
+          <div className={styles.finishCard}>
+            <h2 className={styles.finishTitle}>All done!</h2>
+            <p className={styles.finishText}>You've gone through all the cards.</p>
+            {answeredCount > 0 ? (
+              <div className={styles.score}>
+                <strong>Score:</strong> {Math.round((correctCount / answeredCount) * 100)}% (
+                {correctCount} / {answeredCount})
+              </div>
+            ) : null}
+          </div>
         </Card>
       )}
       <div className={styles.actions}>
@@ -103,7 +112,13 @@ export default function FlashCards({cards}: FlashCardsProps) {
               title="Again"
             />
             <CardButton
-              onClick={nextCard}
+              onClick={() => setFlipped(!flipped)}
+              color="#f59e0b"
+              icon={<FaRotate />}
+              title="Flip"
+            />
+            <CardButton
+              onClick={markCorrectAndNext}
               disabled={!flipped}
               color="#10B981"
               icon={<FaRegFaceSmile />}
@@ -116,6 +131,8 @@ export default function FlashCards({cards}: FlashCardsProps) {
               setCurrentCard(0)
               setCardsState(cards)
               setFlipped(false)
+              setAnsweredCount(0)
+              setCorrectCount(0)
             }}
             icon={<FaArrowRotateLeft />}
             color="#3b82f6"

@@ -16,13 +16,15 @@ export default function Devanagari({devanagari, transliteration, example}: Devan
         <div className={styles.devanagari}>{devanagari}</div>
         <div className={styles.transliteration}>{transliteration}</div>
       </div>
-      <div className={styles.example}>
-        <span className={styles.exampleLabel}>Example</span>
-        <div className={styles.exampleContent}>
-          {example.devanagari} ({example.transliteration})
+      {example && (
+        <div className={styles.example}>
+          <span className={styles.exampleLabel}>Example</span>
+          <div className={styles.exampleContent}>
+            {example.devanagari} ({example.transliteration})
+          </div>
+          <div className={styles.exampleTranslation}>{example.translation}</div>
         </div>
-        <div className={styles.exampleTranslation}>{example.translation}</div>
-      </div>
+      )}
     </div>
   )
 }

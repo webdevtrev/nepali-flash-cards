@@ -1,0 +1,210 @@
+/* AudioButton styles: base + speaker variant + visual variants */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bg, #fff);
+  aspect-ratio: 1 / 1;
+  padding: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 1.5rem;
+  display: inline-block;
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+.label {
+  font-size: 0.95rem;
+}
+
+/* Speaker-style variant used by WordOfTheDay */
+.speakerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #d6c8a0;
+  border-radius: 8px;
+  background: #fff8e6;
+  color: #8a7040;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.speakerButton:hover {
+  background: #f0e8cc;
+}
+
+/* Speaker variant (same visual as .speakerButton) */
+.speaker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #d6c8a0;
+  border-radius: 8px;
+  background: #fff8e6;
+  color: #8a7040;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.speaker:hover {
+  background: #f0e8cc;
+}
+
+/* Size utilities */
+.small {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+.small .icon {
+  font-size: 20px;
+}
+
+.medium {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+.medium .icon {
+  font-size: 24px;
+}
+
+.large {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+}
+.large .icon {
+  font-size: 32px;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.5;
+  position: relative;
+  z-index: 1;
+}
+
+/* loading ring around the button */
+/* .loading::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  border-radius: 50%;
+  background: conic-gradient(var(--fg, #2563eb) 0% 20%, rgba(0, 0, 0, 0) 20% 100%);
+  z-index: -1;
+  animation: spin 1s linear infinite;
+} */
+/* 
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+} */
+
+/* pressed state (active) */
+.button:active,
+.button.pressed {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* playing state: concentric ripples */
+.playing::before,
+.playing::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.16);
+  animation: ripple 1.6s infinite;
+}
+.playing::after {
+  animation-delay: 0.6s;
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.18);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(37, 99, 235, 0.02);
+  }
+  100% {
+    box-shadow: 0 0 0 24px rgba(37, 99, 235, 0);
+  }
+}
+
+/* complete state */
+.complete {
+  background: #dcfce7; /* green-50 */
+  color: #059669; /* green-600 */
+  border: 1px solid transparent;
+}
+.complete .icon {
+  color: #059669;
+  font-weight: 700;
+}
+
+/* Variant styles (Primary = filled, Secondary = outline, Ghost = minimal) */
+.primary {
+  --bg: #2563eb; /* blue-600 */
+  --fg: #ffffff;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid transparent;
+}
+
+.primary .icon {
+  color: var(--fg);
+}
+
+.secondary {
+  --border: #2563eb; /* blue-600 */
+  --fg: #2563eb;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+.secondary .icon {
+  color: var(--fg);
+}
+
+.ghost {
+  --bg-ghost: rgba(37, 99, 235, 0.08); /* subtle blue */
+  --fg: #2563eb;
+  background: var(--bg-ghost);
+  color: var(--fg);
+  border: 1px solid transparent;
+}
+
+.ghost .icon {
+  color: var(--fg);
+}

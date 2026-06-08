@@ -1,11 +1,16 @@
 .section {
-  min-height: 100vh;
+  box-sizing: border-box;
+  height: 100%;
   margin-left: 0;
-  padding: 2rem 1rem;
+  overflow: auto;
+  padding-bottom: 64px;
 }
 
 .main {
-  /* layout container for page content */
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 2rem 1rem;
 }
 @media (min-width: 768px) {
   .section {
