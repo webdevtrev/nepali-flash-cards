@@ -1,7 +1,8 @@
 import React from 'react'
 import type {Meta, StoryObj} from '@storybook/react'
 import AudioButton from './AudioButton'
-import testFile from './testFiles/thankYou.m4a'
+// Use a public short test audio file so Storybook / build won't fail
+const testFile = 'https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3'
 
 const meta: Meta<typeof AudioButton> = {
   title: 'Components/AudioButton',
