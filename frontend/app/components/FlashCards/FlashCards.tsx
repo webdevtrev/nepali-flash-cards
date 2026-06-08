@@ -33,7 +33,7 @@ type FlashCardsProps = {
 }
 
 export default function FlashCards({cards, type, className}: FlashCardsProps) {
-  const [cardsState, setCardsState] = useState<FlashCard[] | undefined>(cards)
+  const [cardsState, setCardsState] = useState<FlashCard[]>(cards || [])
   const [flipped, setFlipped] = useState(false)
   const [currentCard, setCurrentCard] = useState(0)
   const [answeredCount, setAnsweredCount] = useState(0)
@@ -61,10 +61,10 @@ export default function FlashCards({cards, type, className}: FlashCardsProps) {
   return (
     <div className={[styles.container, className].filter(Boolean).join(' ')}>
       <span>
-        {Math.min(currentCard + 1, cardsState?.length || 0)} / {cardsState?.length}
+        {Math.min(currentCard + 1, cardsState.length || 0)} / {cardsState.length}
       </span>
-      <ProgressBar progress={(currentCard / (cardsState?.length || 1)) * 100} size="medium" />
-      {currentCard < (cardsState?.length || 0) ? (
+      <ProgressBar progress={(currentCard / (cardsState.length || 1)) * 100} size="medium" />
+      {currentCard < (cardsState.length || 0) ? (
         <Card onClick={() => setFlipped(!flipped)} className={styles.card}>
           {!flipped ? (
             <div className={styles.testingSide}>
@@ -72,7 +72,7 @@ export default function FlashCards({cards, type, className}: FlashCardsProps) {
                 lang="ne"
                 className={[styles.devanagari, type === 'devanagari' ? styles.large : ''].join(' ')}
               >
-                {cardsState?.[currentCard]?.devanagari}
+                {cardsState[currentCard]?.devanagari}
               </span>
               {type === 'word' && (
                 <span className={styles.transliteration}>
@@ -82,8 +82,8 @@ export default function FlashCards({cards, type, className}: FlashCardsProps) {
             </div>
           ) : (
             <>
-              {type === 'devanagari' ? <Devanagari {...cardsState[currentCard]} /> : null}
-              {type === 'word' ? <Word {...cardsState[currentCard]} /> : null}
+              {type === 'devanagari' ? <Devanagari {...(cardsState[currentCard] as any)} /> : null}
+              {type === 'word' ? <Word {...(cardsState[currentCard] as any)} /> : null}
             </>
           )}
         </Card>
@@ -129,7 +129,7 @@ export default function FlashCards({cards, type, className}: FlashCardsProps) {
           <CardButton
             onClick={() => {
               setCurrentCard(0)
-              setCardsState(cards)
+              setCardsState(cards || [])
               setFlipped(false)
               setAnsweredCount(0)
               setCorrectCount(0)
