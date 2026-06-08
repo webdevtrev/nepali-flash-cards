@@ -3,6 +3,7 @@ import type {StorybookConfig} from '@storybook/nextjs-vite'
 import {dirname} from 'path'
 
 import {fileURLToPath} from 'url'
+import {resolve} from 'path'
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -21,5 +22,23 @@ const config: StorybookConfig = {
   ],
   framework: getAbsolutePath('@storybook/nextjs-vite'),
   staticDirs: ['../public'],
+  async viteFinal(config) {
+    // Alias `next/link` to a local mock so stories using Next Link render as anchors
+    const storybookDir = dirname(fileURLToPath(import.meta.url))
+    const mockPath = resolve(storybookDir, 'nextLinkMock.tsx')
+    config.resolve = config.resolve || {}
+    const existing = config.resolve.alias
+    let aliases: any[] = []
+    if (Array.isArray(existing)) aliases = existing.filter(Boolean)
+    else if (existing) aliases = [existing as any]
+    // Filter out any malformed alias entries that may cause Vite to throw
+    aliases = aliases.filter((a) => {
+      if (!a) return false
+      if (typeof a === 'string') return true
+      return a.find !== undefined || a.replacement !== undefined
+    })
+    config.resolve.alias = [...aliases, {find: 'next/link', replacement: mockPath}]
+    return config
+  },
 }
 export default config

@@ -151,3 +151,8 @@ samp {
 [data-lang='ne'] {
   font-family: var(--font-devanagari);
 }
+html,
+body {
+  height: 100%;
+  margin: 0;
+}

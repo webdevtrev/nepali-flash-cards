@@ -27,35 +27,7 @@ const linkFields = /* groq */ `
       }
 `
 
-export const getPageQuery = defineQuery(`
-  *[_type == 'page' && slug.current == $slug][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
-    "pageBuilder": pageBuilder[]{
-      ...,
-      _type == "callToAction" => {
-        ...,
-        button {
-          ...,
-          ${linkFields}
-        }
-      },
-      _type == "infoSection" => {
-        content[]{
-          ...,
-          markDefs[]{
-            ...,
-            ${linkReference}
-          }
-        }
-      },
-    },
-  }
-`)
+// Legacy `page` query removed — use `lessonQuery` for content pages.
 
 export const sitemapData = defineQuery(`
   *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {
@@ -87,6 +59,25 @@ export const lessonQuery = defineQuery(`
     }
   },
     ${lessonFields}
+    "pageBuilder": pageBuilder[]{
+      ...,
+      _type == "callToAction" => {
+        ...,
+        button {
+          ...,
+          ${linkFields}
+        }
+      },
+      _type == "infoSection" => {
+        content[]{
+          ...,
+          markDefs[]{
+            ...,
+            ${linkReference}
+          }
+        }
+      },
+    },
   }
 `)
 
@@ -95,10 +86,7 @@ export const lessonPagesSlugs = defineQuery(`
   {"slug": slug.current}
 `)
 
-export const pagesSlugs = defineQuery(`
-  *[_type == "page" && defined(slug.current)]
-  {"slug": slug.current}
-`)
+// Legacy `pagesSlugs` removed — use `lessonPagesSlugs` for lesson slugs.
 
 // Backwards compatibility exports
 export const allPostsQuery = allLessonsQuery

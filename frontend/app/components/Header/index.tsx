@@ -21,7 +21,7 @@ export default function Header() {
     {href: '/', label: 'Home', icon: <FaHome />},
     {href: '/learn', label: 'Learn', icon: <FaBookOpen />},
     {href: '/quiz', label: 'Quiz', icon: <FaQuestionCircle />},
-    {href: '/words', label: 'Words', icon: <FaFont />},
+    {href: '/review', label: 'Review', icon: <FaFont />},
     {href: '/profile', label: 'Profile', icon: <FaUser />},
     {href: '/settings', label: 'Settings', icon: <FaCog />},
   ]

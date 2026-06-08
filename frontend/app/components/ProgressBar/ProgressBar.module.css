@@ -1,0 +1,115 @@
+.container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  height: var(--progress-height);
+}
+
+.small {
+  --progress-height: 6px;
+}
+
+.medium {
+  --progress-height: 8px;
+}
+
+.large {
+  --progress-height: 12px;
+}
+.fill {
+  height: 100%;
+  width: var(--width, 0%);
+  background-color: #3b82f6;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Size modifiers */
+
+/* (striped variant removed) */
+
+/* Indeterminate variant: animated shimmer */
+.indeterminate {
+  position: relative;
+  background-color: #e6eefc;
+  overflow: hidden;
+}
+.indeterminate .fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 150%;
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.15),
+    rgba(59, 130, 246, 0.45),
+    rgba(59, 130, 246, 0.15)
+  );
+  transform: translateX(-100%);
+  animation: indeterminate 1.4s linear infinite;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* (striped movement animation removed) */
+
+/* filled helper class used by segmented rendering */
+.filled {
+  background-color: #3b82f6;
+}
+
+/* Segmented variant: render as dots or segments */
+.container.segmentedContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background-color: transparent;
+  max-width: 100%;
+  height: var(--progress-height);
+}
+.container.segmentedContainer.circular {
+  background-color: #e0e0e0;
+  overflow: visible;
+  margin: calc((var(--circular-size) / 2)- var(--progress-height));
+  justify-content: space-between;
+}
+.circular.small {
+  gap: 4px;
+  --circular-size: 20px;
+}
+.circular.medium {
+  gap: 6px;
+  --circular-size: 24px;
+}
+.circular.large {
+  gap: 8px;
+  --circular-size: 28px;
+}
+.circular .segment {
+  flex: none;
+  display: inline-block;
+  height: var(--circular-size);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+.segment {
+  flex: 1;
+  background-color: #e0e0e0;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+  height: 100%;
+}
+.segment.filled {
+  background-color: #3b82f6;
+}

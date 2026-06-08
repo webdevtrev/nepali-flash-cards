@@ -32,14 +32,19 @@ const homeLocation = {
 
 // resolveHref() is a convenience function that resolves the URL
 // path for different document types and used in the presentation tool.
-function resolveHref(documentType?: string, slug?: string): string | undefined {
+function resolveHref(
+  documentType?: string,
+  slug?: string,
+  sectionSlug?: string,
+): string | undefined {
   switch (documentType) {
     case 'lesson':
-      return slug ? `/lessons/${slug}` : undefined
+      // If the lesson has a section, build a course route: /courses/:sectionSlug/:slug
+      return sectionSlug && slug ? `/courses/${sectionSlug}/${slug}` : slug ? `/${slug}` : undefined
     case 'page':
       return slug ? `/${slug}` : undefined
     default:
-      console.warn('Invalid document type:', documentType)
+      console.warn('Invalid or unsupported document type for resolveHref:', documentType)
       return undefined
   }
 }
@@ -73,7 +78,7 @@ export default defineConfig({
             filter: `_type == "page" && slug.current == $slug || _id == $slug`,
           },
           {
-            route: '/lessons/:slug',
+            route: '/courses/:sectionSlug/:slug',
             filter: `_type == "lesson" && slug.current == $slug || _id == $slug`,
           },
         ]),
@@ -102,12 +107,13 @@ export default defineConfig({
             select: {
               title: 'title',
               slug: 'slug.current',
+              sectionSlug: 'section.slug.current',
             },
             resolve: (doc) => ({
               locations: [
                 {
                   title: doc?.title || 'Untitled',
-                  href: resolveHref('lesson', doc?.slug)!,
+                  href: resolveHref('lesson', doc?.slug, doc?.sectionSlug)!,
                 },
                 {
                   title: 'Home',

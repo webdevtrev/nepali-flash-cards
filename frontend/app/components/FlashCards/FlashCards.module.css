@@ -1,173 +1,52 @@
-.root {
-  background: var(--color-background);
-  color: var(--color-text-primary);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    sans-serif;
+.container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  max-width: 720px;
-  margin: 0 auto;
+  gap: 1rem;
 }
-
-/* dark-mode variable overrides are in globals.css under .fc-dark */
-
-.toolbar {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: flex-end;
-}
-
-/* toggle styles live in Toggle/Toggle.module.css */
-
-.stats {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.progressWrap {
-  height: 10px;
-  background: var(--progress-bg);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  background: var(--progress-fill);
-  transition: width 0.3s ease;
-}
-
-.small {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
 .card {
-  width: min(680px, 92vw);
-  min-height: 36vh;
-  background: var(--flashcard-bg);
-  border-radius: 18px;
-  box-shadow: var(--card-shadow);
-  padding: 24px 18px;
+  flex-grow: 1;
+  width: 100%;
+}
+.finishTitle {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--text-900, #111827);
+}
+.finishCard {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+.finishText {
+  font-size: 1.25rem;
+  color: var(--text-700, #374151);
+}
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.testingSide {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
 }
-
-.card:focus-visible {
-  outline: 2px solid var(--color-info);
+.devanagari {
+  font-size: 4rem;
 }
-
-.hint {
-  margin-bottom: 8px;
+.large {
+  font-size: 10rem;
 }
-
-.dev {
-  font-size: clamp(1.05rem, 4.6vw, 1.25rem);
-  margin-bottom: 8px;
-}
-
-.side {
-  font-size: clamp(1.35rem, 6vw, 2rem);
-  font-weight: 700;
-  margin: 4px 0;
-}
-
-.pron {
-  font-size: clamp(1rem, 4.2vw, 1.15rem);
-  color: var(--color-text-muted);
-  margin-top: 6px;
-}
-
-.controls {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.btn {
-  border-radius: 12px;
-  border: 1px solid rgba(127, 127, 127, 0.25);
-  background: var(--card-bg);
-  color: var(--color-text-primary);
-  padding: 10px 16px;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: var(--card-shadow);
-  transition: transform 0.06s ease;
-  min-width: 110px;
-}
-
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btnPrimary {
-  background: var(--button-primary-bg);
-  color: white;
-  border-color: transparent;
-}
-
-.btnBad {
-  background: var(--color-error);
-  color: white;
-  border-color: transparent;
-}
-
-.end {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  align-items: center;
-  background: var(--card-bg);
-  padding: 28px;
-  border-radius: 16px;
-  box-shadow: var(--card-shadow);
-  width: min(680px, 92vw);
-}
-
-.summary {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: center;
-}
-
-.good {
-  color: var(--color-success);
-}
-
-.bad {
-  color: var(--color-error);
-}
-
-.desktop {
-  font-size: 0.8em;
-  opacity: 0.6;
-}
-
-@media (max-width: 600px) {
-  .desktop {
-    display: none;
-  }
+.transliteration {
+  font-size: 1.5rem;
+  color: #555;
 }

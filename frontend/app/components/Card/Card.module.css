@@ -1,0 +1,67 @@
+.card {
+  background: white;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  height: 100%;
+  transition:
+    box-shadow 150ms ease,
+    transform 80ms ease;
+}
+.clickable {
+  cursor: pointer;
+}
+
+.card.clickable:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+.card.clickable {
+  cursor: pointer;
+}
+
+/* Button reset for clickable button variant */
+.button {
+  margin: 0;
+  width: 100%;
+  text-align: left;
+}
+
+/* Focus styles for accessibility */
+.button:focus-visible,
+.link:focus-visible,
+.card.clickable:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+.header {
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-900, #111827);
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--muted, #6b7280);
+}
+
+.content {
+  font-size: 0.95rem;
+  color: var(--text-700, #374151);
+  flex-grow: 1;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
