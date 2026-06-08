@@ -14,12 +14,45 @@
 
 export declare const internalGroqTypeReferenceTo: unique symbol
 
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
+
 // Source: ../sanity.schema.json
-export type PageReference = {
+export type ConsonantReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'page'
+  [internalGroqTypeReferenceTo]?: 'consonant'
+}
+
+export type CombinationReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'combination'
+}
+
+export type SanityFileAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+}
+
+export type Flashcard = {
+  _type: 'flashcard'
+  front?: string
+  back?: string
+  sourceRef?: ConsonantReference | CombinationReference
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  difficulty?: number
 }
 
 export type LessonReference = {
@@ -31,9 +64,8 @@ export type LessonReference = {
 
 export type Link = {
   _type: 'link'
-  linkType?: 'href' | 'page' | 'lesson'
+  linkType?: 'href' | 'lesson'
   href?: string
-  page?: PageReference
   lesson?: LessonReference
   openInNewTab?: boolean
 }
@@ -99,9 +131,8 @@ export type BlockContent = Array<
       style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
       listItem?: 'bullet' | 'number'
       markDefs?: Array<{
-        linkType?: 'href' | 'page' | 'lesson'
+        linkType?: 'href' | 'lesson'
         href?: string
-        page?: PageReference
         lesson?: LessonReference
         openInNewTab?: boolean
         _type: 'link'
@@ -127,11 +158,101 @@ export type Button = {
   link?: Link
 }
 
+export type FlashcardSet = {
+  _id: string
+  _type: 'flashcardSet'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  description?: string
+  cards?: Array<
+    | ({
+        _key: string
+      } & Flashcard)
+    | ConsonantReference
+    | CombinationReference
+  >
+  settings?: {
+    shuffle?: boolean
+    spacedRepetition?: boolean
+  }
+}
+
+export type VowelReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'vowel'
+}
+
 export type WordReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'word'
+}
+
+export type PhraseReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'phrase'
+}
+
+export type Combination = {
+  _id: string
+  _type: 'combination'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  base: ConsonantReference
+  vowel?: VowelReference
+  glyph: string
+  transliteration?: string
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
+}
+
+export type Vowel = {
+  _id: string
+  _type: 'vowel'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  label: string
+  matra?: string
+  transliteration?: string
+  order?: number
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+}
+
+export type Consonant = {
+  _id: string
+  _type: 'consonant'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  char: string
+  transliteration: string
+  type: 'consonant' | 'vowel'
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
 }
 
 export type WordOfTheDay = {
@@ -167,13 +288,6 @@ export type Phrase = {
       _key: string
     } & TagsReference
   >
-}
-
-export type SanityFileAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
 }
 
 export type Word = {
@@ -225,9 +339,8 @@ export type Settings = {
     style?: 'normal'
     listItem?: never
     markDefs?: Array<{
-      linkType?: 'href' | 'page' | 'lesson'
+      linkType?: 'href' | 'lesson'
       href?: string
-      page?: PageReference
       lesson?: LessonReference
       openInNewTab?: boolean
       _type: 'link'
@@ -264,31 +377,18 @@ export type SanityImageHotspot = {
   width: number
 }
 
-export type Page = {
-  _id: string
-  _type: 'page'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name: string
-  slug: Slug
-  heading: string
-  subheading?: string
-  pageBuilder?: Array<
-    | ({
-        _key: string
-      } & CallToAction)
-    | ({
-        _key: string
-      } & InfoSection)
-  >
-}
-
 export type PersonReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'person'
+}
+
+export type CourseSectionReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'courseSection'
 }
 
 export type Lesson = {
@@ -299,8 +399,18 @@ export type Lesson = {
   _rev: string
   title: string
   slug: Slug
+  heading?: string
+  subheading?: string
   content?: BlockContent
   excerpt?: string
+  pageBuilder?: Array<
+    | ({
+        _key: string
+      } & CallToAction)
+    | ({
+        _key: string
+      } & InfoSection)
+  >
   coverImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -311,6 +421,31 @@ export type Lesson = {
   }
   date?: string
   author?: PersonReference
+  section?: CourseSectionReference
+}
+
+export type CourseSection = {
+  _id: string
+  _type: 'courseSection'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: string
+  level?: string
+  order?: number
+  lessons?: Array<
+    {
+      _key: string
+    } & LessonReference
+  >
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
 }
 
 export type Person = {
@@ -329,12 +464,6 @@ export type Person = {
     alt?: string
     _type: 'image'
   }
-}
-
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
 }
 
 export type SanityAssistInstructionTask = {
@@ -572,7 +701,10 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
-  | PageReference
+  | ConsonantReference
+  | CombinationReference
+  | SanityFileAssetReference
+  | Flashcard
   | LessonReference
   | Link
   | SanityImageAssetReference
@@ -581,21 +713,27 @@ export type AllSanitySchemaTypes =
   | BlockContentTextOnly
   | BlockContent
   | Button
+  | FlashcardSet
+  | VowelReference
   | WordReference
+  | PhraseReference
+  | Combination
+  | Vowel
+  | Consonant
   | WordOfTheDay
   | TagsReference
   | Phrase
-  | SanityFileAssetReference
   | Word
   | Tags
   | Settings
   | SanityImageCrop
   | SanityImageHotspot
-  | Page
   | PersonReference
+  | CourseSectionReference
   | Lesson
-  | Person
+  | CourseSection
   | Slug
+  | Person
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations
@@ -638,9 +776,8 @@ export type SettingsQueryResult = {
     style?: 'normal'
     listItem?: never
     markDefs?: Array<{
-      linkType?: 'href' | 'lesson' | 'page'
+      linkType?: 'href' | 'lesson'
       href?: string
-      page?: PageReference
       lesson?: LessonReference
       openInNewTab?: boolean
       _type: 'link'
@@ -662,101 +799,13 @@ export type SettingsQueryResult = {
 } | null
 
 // Source: sanity/lib/queries.ts
-// Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }          }        }      },    },  }
-export type GetPageQueryResult = {
-  _id: string
-  _type: 'page'
-  name: string
-  slug: Slug
-  heading: string
-  subheading: string | null
-  pageBuilder: Array<
-    | {
-        _key: string
-        _type: 'callToAction'
-        eyebrow?: string
-        heading: string
-        body?: BlockContentTextOnly
-        button: {
-          _type: 'button'
-          buttonText?: string
-          link: {
-            _type: 'link'
-            linkType?: 'href' | 'lesson' | 'page'
-            href?: string
-            page: string | null
-            lesson: string | null
-            openInNewTab?: boolean
-          } | null
-        } | null
-        image?: {
-          asset?: SanityImageAssetReference
-          media?: unknown
-          hotspot?: SanityImageHotspot
-          crop?: SanityImageCrop
-          _type: 'image'
-        }
-        theme?: 'dark' | 'light'
-        contentAlignment?: 'imageFirst' | 'textFirst'
-      }
-    | {
-        _key: string
-        _type: 'infoSection'
-        heading?: string
-        subheading?: string
-        content: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>
-                text?: string
-                _type: 'span'
-                _key: string
-              }>
-              style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-              listItem?: 'bullet' | 'number'
-              markDefs: Array<{
-                linkType?: 'href' | 'lesson' | 'page'
-                href?: string
-                page: string | null
-                lesson: string | null
-                openInNewTab?: boolean
-                _type: 'link'
-                _key: string
-              }> | null
-              level?: number
-              _type: 'block'
-              _key: string
-            }
-          | {
-              asset?: SanityImageAssetReference
-              media?: unknown
-              hotspot?: SanityImageHotspot
-              crop?: SanityImageCrop
-              _type: 'image'
-              _key: string
-              markDefs: null
-            }
-        > | null
-      }
-  > | null
-} | null
-
-// Source: sanity/lib/queries.ts
 // Variable: sitemapData
 // Query: *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
-export type SitemapDataResult = Array<
-  | {
-      slug: string
-      _type: 'lesson'
-      _updatedAt: string
-    }
-  | {
-      slug: string
-      _type: 'page'
-      _updatedAt: string
-    }
->
+export type SitemapDataResult = Array<{
+  slug: string
+  _type: 'lesson'
+  _updatedAt: string
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: allLessonsQuery
@@ -824,7 +873,7 @@ export type MoreLessonsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: lessonQuery
-// Query: *[_type == "lesson" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
+// Query: *[_type == "lesson" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }          }        }      },    },  }
 export type LessonQueryResult = {
   content: Array<
     | {
@@ -837,13 +886,13 @@ export type LessonQueryResult = {
         style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
         listItem?: 'bullet' | 'number'
         markDefs: Array<{
-          linkType?: 'href' | 'lesson' | 'page'
+          linkType?: 'href' | 'lesson'
           href?: string
-          page: string | null
           lesson: string | null
           openInNewTab?: boolean
           _type: 'link'
           _key: string
+          page: null
         }> | null
         level?: number
         _type: 'block'
@@ -885,19 +934,81 @@ export type LessonQueryResult = {
       _type: 'image'
     }
   } | null
+  pageBuilder: Array<
+    | {
+        _key: string
+        _type: 'callToAction'
+        eyebrow?: string
+        heading: string
+        body?: BlockContentTextOnly
+        button: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'lesson'
+            href?: string
+            lesson: string | null
+            openInNewTab?: boolean
+            page: null
+          } | null
+        } | null
+        image?: {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          _type: 'image'
+        }
+        theme?: 'dark' | 'light'
+        contentAlignment?: 'imageFirst' | 'textFirst'
+      }
+    | {
+        _key: string
+        _type: 'infoSection'
+        heading?: string
+        subheading?: string
+        content: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+              listItem?: 'bullet' | 'number'
+              markDefs: Array<{
+                linkType?: 'href' | 'lesson'
+                href?: string
+                lesson: string | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+                page: null
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
+            }
+          | {
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              _type: 'image'
+              _key: string
+              markDefs: null
+            }
+        > | null
+      }
+  > | null
 } | null
 
 // Source: sanity/lib/queries.ts
 // Variable: lessonPagesSlugs
 // Query: *[_type == "lesson" && defined(slug.current)]  {"slug": slug.current}
 export type LessonPagesSlugsResult = Array<{
-  slug: string
-}>
-
-// Source: sanity/lib/queries.ts
-// Variable: pagesSlugs
-// Query: *[_type == "page" && defined(slug.current)]  {"slug": slug.current}
-export type PagesSlugsResult = Array<{
   slug: string
 }>
 
@@ -943,13 +1054,11 @@ import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllLessonsQueryResult
     '\n  *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MoreLessonsQueryResult
-    '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': LessonQueryResult
+    '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': LessonQueryResult
     '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
-    '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
     '\n  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
     '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n      "audio": audio.asset->url,\n    }\n  }\n': CurrentWordOfTheDayQueryResult

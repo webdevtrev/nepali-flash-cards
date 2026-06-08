@@ -1,0 +1,21 @@
+/* Load app fonts from Google Fonts and expose the same CSS variables used in `globals.css` */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
+
+:root {
+  --font-cinzel: 'Cinzel', serif;
+  --font-fraunces: 'Fraunces', serif;
+  --font-inter: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --font-ibm-plex-mono:
+    'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  --font-noto-sans-devanagari: 'Noto Sans Devanagari', sans-serif;
+}
+
+/* Small reset so Storybook canvas matches app base layout */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}

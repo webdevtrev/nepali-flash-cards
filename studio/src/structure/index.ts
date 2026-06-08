@@ -8,7 +8,8 @@ import pluralize from 'pluralize-esm'
  * Learn more: https://www.sanity.io/docs/structure-builder-introduction
  */
 
-const DISABLED_TYPES = ['settings', 'assist.instruction.context']
+// Hide specific document types from the main Studio list (Pages, Lessons, People, Settings)
+const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'person']
 
 export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
@@ -22,25 +23,11 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
           const title = pluralize(listItem.getTitle() as string)
           const item = listItem.title(title)
 
-          if (listItem.getId() === 'word') {
-            return item.child(S.documentTypeList('word').title(title).showIcons(false))
-          }
-
-          if (listItem.getId() === 'phrase') {
-            return item.child(S.documentTypeList('phrase').title(title).showIcons(false))
-          }
-
-          if (listItem.getId() === 'wordOfTheDay') {
-            return item.child(
-              S.documentTypeList('wordOfTheDay').title('Word of the Days').showIcons(false),
-            )
-          }
-
-          return item
+          return item.child(
+            S.documentTypeList(listItem.getId() as string)
+              .title(listItem.getTitle() as string)
+              .showIcons(false),
+          )
         }),
-      // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
-      S.listItem()
-        .title('Site Settings')
-        .child(S.document().schemaType('settings').documentId('siteSettings'))
-        .icon(CogIcon),
+      // (Site Settings and other types intentionally hidden)
     ])

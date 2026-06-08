@@ -14,12 +14,45 @@
 
 export declare const internalGroqTypeReferenceTo: unique symbol
 
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
+
 // Source: ../sanity.schema.json
-export type PageReference = {
+export type ConsonantReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'page'
+  [internalGroqTypeReferenceTo]?: 'consonant'
+}
+
+export type CombinationReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'combination'
+}
+
+export type SanityFileAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+}
+
+export type Flashcard = {
+  _type: 'flashcard'
+  front?: string
+  back?: string
+  sourceRef?: ConsonantReference | CombinationReference
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  difficulty?: number
 }
 
 export type LessonReference = {
@@ -31,9 +64,8 @@ export type LessonReference = {
 
 export type Link = {
   _type: 'link'
-  linkType?: 'href' | 'page' | 'lesson'
+  linkType?: 'href' | 'lesson'
   href?: string
-  page?: PageReference
   lesson?: LessonReference
   openInNewTab?: boolean
 }
@@ -99,9 +131,8 @@ export type BlockContent = Array<
       style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
       listItem?: 'bullet' | 'number'
       markDefs?: Array<{
-        linkType?: 'href' | 'page' | 'lesson'
+        linkType?: 'href' | 'lesson'
         href?: string
-        page?: PageReference
         lesson?: LessonReference
         openInNewTab?: boolean
         _type: 'link'
@@ -127,11 +158,101 @@ export type Button = {
   link?: Link
 }
 
+export type FlashcardSet = {
+  _id: string
+  _type: 'flashcardSet'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  description?: string
+  cards?: Array<
+    | ({
+        _key: string
+      } & Flashcard)
+    | ConsonantReference
+    | CombinationReference
+  >
+  settings?: {
+    shuffle?: boolean
+    spacedRepetition?: boolean
+  }
+}
+
+export type VowelReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'vowel'
+}
+
 export type WordReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'word'
+}
+
+export type PhraseReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'phrase'
+}
+
+export type Combination = {
+  _id: string
+  _type: 'combination'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  base: ConsonantReference
+  vowel?: VowelReference
+  glyph: string
+  transliteration?: string
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
+}
+
+export type Vowel = {
+  _id: string
+  _type: 'vowel'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  label: string
+  matra?: string
+  transliteration?: string
+  order?: number
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+}
+
+export type Consonant = {
+  _id: string
+  _type: 'consonant'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  char: string
+  transliteration: string
+  type: 'consonant' | 'vowel'
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
 }
 
 export type WordOfTheDay = {
@@ -167,13 +288,6 @@ export type Phrase = {
       _key: string
     } & TagsReference
   >
-}
-
-export type SanityFileAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
 }
 
 export type Word = {
@@ -225,9 +339,8 @@ export type Settings = {
     style?: 'normal'
     listItem?: never
     markDefs?: Array<{
-      linkType?: 'href' | 'page' | 'lesson'
+      linkType?: 'href' | 'lesson'
       href?: string
-      page?: PageReference
       lesson?: LessonReference
       openInNewTab?: boolean
       _type: 'link'
@@ -264,31 +377,18 @@ export type SanityImageHotspot = {
   width: number
 }
 
-export type Page = {
-  _id: string
-  _type: 'page'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  name: string
-  slug: Slug
-  heading: string
-  subheading?: string
-  pageBuilder?: Array<
-    | ({
-        _key: string
-      } & CallToAction)
-    | ({
-        _key: string
-      } & InfoSection)
-  >
-}
-
 export type PersonReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'person'
+}
+
+export type CourseSectionReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'courseSection'
 }
 
 export type Lesson = {
@@ -299,8 +399,18 @@ export type Lesson = {
   _rev: string
   title: string
   slug: Slug
+  heading?: string
+  subheading?: string
   content?: BlockContent
   excerpt?: string
+  pageBuilder?: Array<
+    | ({
+        _key: string
+      } & CallToAction)
+    | ({
+        _key: string
+      } & InfoSection)
+  >
   coverImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -311,6 +421,31 @@ export type Lesson = {
   }
   date?: string
   author?: PersonReference
+  section?: CourseSectionReference
+}
+
+export type CourseSection = {
+  _id: string
+  _type: 'courseSection'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: string
+  level?: string
+  order?: number
+  lessons?: Array<
+    {
+      _key: string
+    } & LessonReference
+  >
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
 }
 
 export type Person = {
@@ -329,12 +464,6 @@ export type Person = {
     alt?: string
     _type: 'image'
   }
-}
-
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
 }
 
 export type SanityAssistInstructionTask = {
@@ -572,7 +701,10 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
-  | PageReference
+  | ConsonantReference
+  | CombinationReference
+  | SanityFileAssetReference
+  | Flashcard
   | LessonReference
   | Link
   | SanityImageAssetReference
@@ -581,21 +713,27 @@ export type AllSanitySchemaTypes =
   | BlockContentTextOnly
   | BlockContent
   | Button
+  | FlashcardSet
+  | VowelReference
   | WordReference
+  | PhraseReference
+  | Combination
+  | Vowel
+  | Consonant
   | WordOfTheDay
   | TagsReference
   | Phrase
-  | SanityFileAssetReference
   | Word
   | Tags
   | Settings
   | SanityImageCrop
   | SanityImageHotspot
-  | Page
   | PersonReference
+  | CourseSectionReference
   | Lesson
-  | Person
+  | CourseSection
   | Slug
+  | Person
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations

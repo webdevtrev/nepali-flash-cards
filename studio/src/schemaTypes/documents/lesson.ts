@@ -1,13 +1,10 @@
+import {defineField, defineType} from 'sanity'
 import {DocumentTextIcon} from '@sanity/icons'
 import {format, parseISO} from 'date-fns'
-import {defineField, defineType} from 'sanity'
-import type {Lesson} from '../../../sanity.types'
 
 /**
- * Lesson schema.  Define and edit the fields for the 'lesson' content type.
- * Learn more: https://www.sanity.io/docs/schema-types
+ * Lesson schema (merged and cleaned).
  */
-
 export const lesson = defineType({
   name: 'lesson',
   title: 'Lesson',
@@ -18,7 +15,7 @@ export const lesson = defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (rule) => rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -28,9 +25,19 @@ export const lesson = defineType({
       options: {
         source: 'title',
         maxLength: 96,
-        isUnique: (value, context) => context.defaultIsUnique(value, context),
+        // Sanity will use its default uniqueness check at runtime
       },
-      validation: (rule) => rule.required(),
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Heading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
     }),
     defineField({
       name: 'content',
@@ -43,31 +50,33 @@ export const lesson = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      of: [{type: 'callToAction'}, {type: 'infoSection'}],
+      options: {
+        insertMenu: {
+          views: [
+            {
+              name: 'grid',
+              previewImageUrl: (schemaTypeName: string) =>
+                `/static/page-builder-thumbnails/${schemaTypeName}.webp`,
+            },
+          ],
+        },
+      },
+    }),
+    defineField({
       name: 'coverImage',
       title: 'Cover Image',
       type: 'image',
-      options: {
-        hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
-      },
+      options: {hotspot: true},
       fields: [
         {
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
           description: 'Important for SEO and accessibility.',
-          validation: (rule) => {
-            // Custom validation to ensure alt text is provided if the image is present. https://www.sanity.io/docs/validation
-            return rule.custom((alt, context) => {
-              const document = context.document as Lesson
-              if (document?.coverImage?.asset?._ref && !alt) {
-                return 'Required'
-              }
-              return true
-            })
-          },
         },
       ],
     }),
@@ -83,8 +92,13 @@ export const lesson = defineType({
       type: 'reference',
       to: [{type: 'person'}],
     }),
+    defineField({
+      name: 'section',
+      title: 'Course Section',
+      type: 'reference',
+      to: [{type: 'courseSection'}],
+    }),
   ],
-  // List preview configuration. https://www.sanity.io/docs/previews-list-views
   preview: {
     select: {
       title: 'title',
@@ -93,7 +107,7 @@ export const lesson = defineType({
       date: 'date',
       media: 'coverImage',
     },
-    prepare({title, media, authorFirstName, authorLastName, date}) {
+    prepare({title, media, authorFirstName, authorLastName, date}: any) {
       const subtitles = [
         authorFirstName && authorLastName && `by ${authorFirstName} ${authorLastName}`,
         date && `on ${format(parseISO(date), 'LLL d, yyyy')}`,

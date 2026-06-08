@@ -80,3 +80,8 @@
   color: var(--color-text-muted);
   margin: 0;
 }
+@media (min-width: 768px) {
+  .logo {
+    display: none;
+  }
+}

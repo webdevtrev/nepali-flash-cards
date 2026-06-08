@@ -27,7 +27,7 @@ export default function HeaderMobile() {
     {href: '/', label: 'Home', icon: <GoHome />, activeIcon: <GoHomeFill />},
     {href: '/learn', label: 'Learn', icon: <FaBookOpen />, activeIcon: <FaBookOpen />},
     {href: '/quiz', label: 'Quiz', icon: <FaRegQuestionCircle />, activeIcon: <FaQuestionCircle />},
-    {href: '/words', label: 'Words', icon: <FaFont />, activeIcon: <FaFont />},
+    {href: '/review', label: 'Review', icon: <FaFont />, activeIcon: <FaFont />},
     {href: '/profile', label: 'Profile', icon: <FaRegUser />, activeIcon: <FaUser />},
   ]
 

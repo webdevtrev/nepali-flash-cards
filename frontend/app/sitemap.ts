@@ -36,17 +36,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let url: string
 
     for (const p of allLessonsAndPages.data) {
-      switch (p._type) {
-        case 'page':
-          priority = 0.8
-          changeFrequency = 'monthly'
-          url = `${domain}/${p.slug}`
-          break
-        case 'lesson':
-          priority = 0.5
-          changeFrequency = 'never'
-          url = `${domain}/lessons/${p.slug}`
-          break
+      // Map lessons (and legacy pages) to URLs. New lessons will live under /courses/:sectionSlug/:slug
+      if (p._type === 'lesson') {
+        priority = 0.5
+        changeFrequency = 'never'
+        url = `${domain}/lessons/${p.slug}`
+      } else {
+        // Fallback for other types (legacy pages)
+        priority = 0.8
+        changeFrequency = 'monthly'
+        url = `${domain}/${p.slug}`
       }
       sitemap.push({
         lastModified: p._updatedAt || new Date(),

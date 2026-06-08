@@ -4,12 +4,12 @@ import {SanityDocument} from 'next-sanity'
 import {useOptimistic} from 'next-sanity/hooks'
 
 import BlockRenderer from '@/app/components/BlockRenderer'
-import {GetPageQueryResult} from '@/sanity.types'
+import type {LessonQueryResult} from '@/sanity.types'
 import {dataAttr} from '@/sanity/lib/utils'
 import {PageBuilderSection} from '@/sanity/lib/types'
 
 type PageBuilderPageProps = {
-  page: GetPageQueryResult
+  page: PageData | null
 }
 
 type PageData = {
@@ -27,7 +27,7 @@ function RenderSections({
   page,
 }: {
   pageBuilderSections: PageBuilderSection[]
-  page: GetPageQueryResult
+  page: PageData | null
 }) {
   if (!page) {
     return null
@@ -36,7 +36,7 @@ function RenderSections({
     <div
       data-sanity={dataAttr({
         id: page._id,
-        type: page._type,
+        type: 'lesson',
         path: `pageBuilder`,
       }).toString()}
     >
@@ -46,14 +46,14 @@ function RenderSections({
           index={index}
           block={block}
           pageId={page._id}
-          pageType={page._type}
+          pageType={page._type ?? 'lesson'}
         />
       ))}
     </div>
   )
 }
 
-function RenderEmptyState({page}: {page: GetPageQueryResult}) {
+function RenderEmptyState({page}: {page: LessonQueryResult | null}) {
   if (!page) {
     return null
   }
@@ -63,13 +63,13 @@ function RenderEmptyState({page}: {page: GetPageQueryResult}) {
       className="container mt-10"
       data-sanity={dataAttr({
         id: page._id,
-        type: 'page',
+        type: 'lesson',
         path: `pageBuilder`,
       }).toString()}
     >
       <div className="prose">
-        <h2 className="">This page has no content!</h2>
-        <p className="">Open the page in Sanity Studio to add content.</p>
+        <h2 className="">This lesson has no content!</h2>
+        <p className="">Open the lesson in Sanity Studio to add content.</p>
       </div>
     </div>
   )
@@ -103,6 +103,6 @@ export default function PageBuilder({page}: PageBuilderPageProps) {
   return pageBuilderSections && pageBuilderSections.length > 0 ? (
     <RenderSections pageBuilderSections={pageBuilderSections} page={page} />
   ) : (
-    <RenderEmptyState page={page} />
+    <RenderEmptyState page={page as LessonQueryResult} />
   )
 }

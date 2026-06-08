@@ -1,10 +1,12 @@
 import Link from 'next/link'
 
 import {linkResolver} from '@/sanity/lib/utils'
-import {DereferencedLink} from '@/sanity/lib/types'
+import type {DereferencedLink} from '@/sanity/lib/types'
+import type {Link as CMSLink} from '@/sanity.types'
 
 interface ResolvedLinkProps {
-  link: DereferencedLink
+  // Accept either a dereferenced link (from GROQ) or the raw Link shape from the CMS
+  link: DereferencedLink | CMSLink
   children: React.ReactNode
   className?: string
 }

@@ -1,124 +1,67 @@
-import type {Meta, StoryObj} from '@storybook/nextjs-vite'
-import FlashCards, {type WordEntry} from './index'
+import React from 'react'
+import type {Meta, StoryObj} from '@storybook/react'
+import FlashCards from './FlashCards'
 
-const meta = {
+const meta: Meta<typeof FlashCards> = {
   title: 'Components/FlashCards',
   component: FlashCards,
-  parameters: {
-    layout: 'padded',
-  },
   tags: ['autodocs'],
-} satisfies Meta<typeof FlashCards>
-
+  decorators: [
+    (Story) => (
+      <div style={{height: '90vh'}}>
+        <Story />
+      </div>
+    ),
+  ],
+}
 export default meta
-type Story = StoryObj<typeof meta>
-
-const greetings: WordEntry[] = [
+type Story = StoryObj<typeof FlashCards>
+const devanagariCards = [
   {
-    english: 'Hello',
-    romanized: 'Namaste',
-    pronunciation: 'nuh-muh-STAY',
-    devanagari: 'नमस्ते',
-    tags: ['greetings'],
+    type: 'devanagari',
+    devanagari: 'क',
+    transliteration: 'ka',
+    example: {devanagari: 'कुकुर', transliteration: 'kukur', translation: 'dog'},
   },
   {
-    english: 'Good morning',
-    romanized: 'Subha prabhat',
-    pronunciation: 'SOO-bha pra-BHAT',
-    devanagari: 'शुभ प्रभात',
-    tags: ['greetings'],
-  },
-  {
-    english: 'Good night',
-    romanized: 'Shubha ratri',
-    pronunciation: 'SHOO-bha RAT-ree',
-    devanagari: 'शुभ रात्रि',
-    tags: ['greetings'],
-  },
-  {
-    english: 'Goodbye',
-    romanized: 'Pheri bhetaula',
-    pronunciation: 'PHEH-ree BHE-tow-la',
-    devanagari: 'फेरि भेटौला',
-    tags: ['greetings'],
-  },
-  {
-    english: 'How are you?',
-    romanized: 'Tapai lai kasto cha?',
-    pronunciation: 'ta-PAI lai KAS-to cha',
-    devanagari: 'तपाईलाई कस्तो छ?',
-    tags: ['greetings'],
+    type: 'devanagari',
+    devanagari: 'ख',
+    transliteration: 'kha',
+    example: {devanagari: 'खुसी', transliteration: 'khusi', translation: 'happy'},
   },
 ]
 
-const mixed: WordEntry[] = [
-  ...greetings,
+const wordCards = [
   {
-    english: 'Thank you',
-    romanized: 'Dhanyabad',
-    pronunciation: 'DHAN-ya-bad',
-    devanagari: 'धन्यवाद',
-    tags: ['politeness'],
+    type: 'word',
+    devanagari: 'घर',
+    transliteration: 'ghar',
+    translation: 'house',
+    pronunciation: 'ghar',
   },
   {
-    english: 'Please',
-    romanized: 'Kripaya',
-    pronunciation: 'kri-PA-ya',
-    devanagari: 'कृपया',
-    tags: ['politeness'],
-  },
-  {
-    english: 'Sorry',
-    romanized: 'Maaf garnuhos',
-    pronunciation: 'maaf GAR-nu-hos',
-    devanagari: 'माफ गर्नुहोस्',
-    tags: ['politeness'],
-  },
-  {english: 'One', romanized: 'Ek', pronunciation: 'ek', devanagari: 'एक', tags: ['numbers']},
-  {english: 'Two', romanized: 'Dui', pronunciation: 'doo-ee', devanagari: 'दुई', tags: ['numbers']},
-  {
-    english: 'Three',
-    romanized: 'Teen',
-    pronunciation: 'teen',
-    devanagari: 'तीन',
-    tags: ['numbers'],
-  },
-  {
-    english: 'Water',
-    romanized: 'Paani',
-    pronunciation: 'PAA-nee',
+    type: 'word',
     devanagari: 'पानी',
-    tags: ['food'],
-  },
-  {
-    english: 'Food / Rice',
-    romanized: 'Bhat',
-    pronunciation: 'bhat',
-    devanagari: 'भात',
-    tags: ['food'],
+    transliteration: 'pani',
+    translation: 'water',
+    pronunciation: 'paani',
   },
 ]
 
 export const Default: Story = {
   args: {
-    words: greetings,
+    cards: devanagariCards as any,
   },
 }
 
-export const LargeDeck: Story = {
+export const DevanagariSet: Story = {
   args: {
-    words: mixed,
+    cards: devanagariCards as any,
   },
 }
 
-export const SingleCard: Story = {
+export const WordSet: Story = {
   args: {
-    words: [{english: 'Hello', romanized: 'Namaste', devanagari: 'नमस्ते'}],
-  },
-}
-
-export const NoDevanagari: Story = {
-  args: {
-    words: greetings.map(({devanagari: _dev, ...rest}) => rest),
+    cards: wordCards as any,
   },
 }

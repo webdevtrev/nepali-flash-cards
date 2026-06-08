@@ -4,13 +4,15 @@ import {useCallback, useEffect, useMemo, useReducer} from 'react'
 import styles from './FlashCards.module.css'
 import Toggle from '@/app/components/Toggle'
 
-export interface WordEntry {
+// Word entries must have an English string and at least one of `romanized` or `devanagari`.
+export type WordEntryBase = {
   english: string
-  romanized: string
   pronunciation?: string
-  devanagari?: string
   tags?: string[] | null
 }
+
+export type WordEntry = WordEntryBase &
+  ({romanized: string; devanagari?: string} | {devanagari: string; romanized?: string})
 
 interface Card {
   en: string
@@ -133,9 +135,10 @@ function reducer(state: State, action: Action): State {
 function normalizeCards(words: WordEntry[]): Card[] {
   return words.map((w) => ({
     en: w.english,
-    nep: w.romanized,
-    pron: w.pronunciation ?? w.romanized,
-    dev: w.devanagari ?? null,
+    // ensure nep/romanized is always a string for the card
+    nep: (w as any).romanized ?? null,
+    pron: w.pronunciation ?? (w as any).romanized ?? '',
+    dev: (w as any).devanagari ?? null,
   }))
 }
 
@@ -163,11 +166,11 @@ export default function FlashCards({words}: FlashCardsProps) {
   if (currentCard) {
     const {en, nep, pron, dev} = currentCard
     if (showingFront) {
-      primaryText = sideIsEnglish ? en : nep
+      primaryText = sideIsEnglish ? en : (nep ?? dev)
       pronLine = sideIsEnglish ? '' : pron
       devLine = sideIsEnglish ? '' : dev
     } else {
-      primaryText = sideIsEnglish ? nep : en
+      primaryText = sideIsEnglish ? (nep ?? dev) : en
       pronLine = sideIsEnglish ? pron : ''
       devLine = sideIsEnglish ? dev : ''
     }
@@ -236,8 +239,8 @@ export default function FlashCards({words}: FlashCardsProps) {
             role="button"
             aria-label="Flip card"
           >
-            {devLine && <div className={styles.dev}>{devLine}</div>}
-            <div className={styles.side}>{primaryText || 'Tap to flip'}</div>
+            {devLine && primaryText && <div className={styles.dev}>{devLine}</div>}
+            <div className={styles.side}>{primaryText || devLine}</div>
             {pronLine && <div className={styles.pron}>{pronLine}</div>}
           </div>
 
