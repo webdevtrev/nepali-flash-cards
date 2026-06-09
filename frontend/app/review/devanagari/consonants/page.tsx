@@ -19,11 +19,16 @@ export default function ConsonantsPage() {
       .fetch(consonantsQuery)
       .then((data: any[]) => {
         if (!mounted) return
+        const shuffledData = [...(data || [])]
+        for (let i = shuffledData.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1))
+          ;[shuffledData[i], shuffledData[j]] = [shuffledData[j], shuffledData[i]]
+        }
         // Debug: log raw fetched data to inspect why `examples` may be missing
         // Remove this log after debugging
         // eslint-disable-next-line no-console
-        console.log('raw fetched consonants:', data)
-        const items = (data || []).map((c: any) => {
+        console.log('raw fetched consonants:', shuffledData)
+        const items = shuffledData.map((c: any) => {
           const examples = c.examples || []
           const raw = examples.length ? examples[Math.floor(Math.random() * examples.length)] : null
           // Normalize example fields so UI can use `transliteration` and `translation`
