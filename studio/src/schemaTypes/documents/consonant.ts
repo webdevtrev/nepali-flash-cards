@@ -30,6 +30,11 @@ export const consonant = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'pronunciationDescription',
+      title: 'Pronunciation Description',
+      type: 'string',
+    }),
+    defineField({
       name: 'type',
       title: 'Type',
       type: 'string',
