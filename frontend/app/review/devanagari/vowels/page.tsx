@@ -5,6 +5,7 @@ import {publicClient} from '@/sanity/lib/client'
 import FlashCards from '@/app/components/FlashCards/FlashCards'
 
 import styles from './page.module.css'
+import { set } from 'date-fns'
 
 // Fetch examples dereferenced (they expose `romanized` and `english` fields in the CMS)
 const vowelsQuery = `*[_type == "vowel"] | order(title asc){_id, char, transliteration, title, "examples": examples[]->{devanagari, romanized, english}}`
@@ -16,7 +17,7 @@ export default function VowelsPage() {
     let mounted = true
 
     publicClient
-      .fetch(consonantsQuery)
+      .fetch(vowelsQuery)
       .then((data: any[]) => {
         if (!mounted) return
         // Debug: log raw fetched data to inspect why `examples` may be missing
@@ -37,12 +38,12 @@ export default function VowelsPage() {
           return {...c, example}
         })
         console.log(items)
-        setConsonants(items)
+        setVowels(items)
       })
       .catch((err) => {
         // Log errors but don't break the UI
         // eslint-disable-next-line no-console
-        console.error('Error fetching consonants:', err)
+        console.error('Error fetching vowels:', err)
       })
 
     return () => {
@@ -57,11 +58,12 @@ export default function VowelsPage() {
       {vowels.length > 0 ? (
         <FlashCards
           type="devanagari"
-          cards={consonants.map((c) => ({
+          cards={vowels.map((c) => ({
             devanagari: c.char,
             transliteration: c.transliteration,
             translation: c.title,
             example: c.example,
+            description: c.pronunciationDescription,
           }))}
           className={styles.flashCards}
         />

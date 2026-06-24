@@ -13,7 +13,6 @@ type FlashCard =
   | {
       devanagari: string
       transliteration: string
-      prouniciationDescription: string
       example: Word
     }
   | {
