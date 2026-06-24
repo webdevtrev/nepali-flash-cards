@@ -7,7 +7,7 @@ import FlashCards from '@/app/components/FlashCards/FlashCards'
 import styles from './page.module.css'
 
 // Fetch examples dereferenced (they expose `romanized` and `english` fields in the CMS)
-const consonantsQuery = `*[_type == "consonant"] | order(title asc){_id, char, transliteration, title, "examples": examples[]->{devanagari, romanized, english}}`
+const consonantsQuery = `*[_type == "consonant"] | order(title asc){_id, char, transliteration, title, pronunciationDescription, "examples": examples[]->{devanagari, romanized, english}}`
 
 export default function ConsonantsPage() {
   const [consonants, setConsonants] = useState<any[]>([])
@@ -67,6 +67,7 @@ export default function ConsonantsPage() {
             transliteration: c.transliteration,
             translation: c.title,
             example: c.example,
+            description: c.pronunciationDescription,
           }))}
           className={styles.flashCards}
         />

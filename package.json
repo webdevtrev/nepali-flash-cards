@@ -38,5 +38,8 @@
   "dependencies": {
     "@sanity/client": "^7.22.0",
     "dotenv": "^17.4.2"
+  },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2"
   }
 }

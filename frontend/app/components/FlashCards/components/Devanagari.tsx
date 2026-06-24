@@ -2,6 +2,7 @@ import styles from './Devanagari.module.css'
 type DevanagariProps = {
   devanagari: string
   transliteration: string
+  pronunciationDescription?: string
   example: {
     devanagari: string
     transliteration: string
@@ -9,7 +10,7 @@ type DevanagariProps = {
   }
 }
 
-export default function Devanagari({devanagari, transliteration, example}: DevanagariProps) {
+export default function Devanagari({devanagari, transliteration, pronunciationDescription, example}: DevanagariProps) {
   return (
     <div className={styles.container}>
       <div className={styles.answer}>
@@ -24,6 +25,9 @@ export default function Devanagari({devanagari, transliteration, example}: Devan
           </div>
           <div className={styles.exampleTranslation}>{example.translation}</div>
         </div>
+      )}
+      {pronunciationDescription && (
+        <div className={styles.pronunciationDescription}>{pronunciationDescription}</div>
       )}
     </div>
   )

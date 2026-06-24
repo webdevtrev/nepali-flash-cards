@@ -1415,6 +1415,13 @@
         },
         "optional": false
       },
+      "pronunciationDescription": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "type": {
         "type": "objectAttribute",
         "value": {

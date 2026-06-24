@@ -245,6 +245,7 @@ export type Consonant = {
   title?: string
   char: string
   transliteration: string
+  pronunciationDescription?: string
   type: 'consonant' | 'vowel'
   audio?: {
     asset?: SanityFileAssetReference
