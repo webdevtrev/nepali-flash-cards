@@ -12,962 +12,1056 @@
  * ---------------------------------------------------------------------------------
  */
 
-export declare const internalGroqTypeReferenceTo: unique symbol;
+export declare const internalGroqTypeReferenceTo: unique symbol
 
-type ArrayOf<T> = Array<T & {
-  _key: string;
-}>;
+type ArrayOf<T> = Array<
+  T & {
+    _key: string
+  }
+>
 
 // Source: ../sanity.schema.json
 export type ConsonantReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "consonant";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'consonant'
+}
 
 export type CombinationReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "combination";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'combination'
+}
 
 export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+}
 
 export type Flashcard = {
-  _type: "flashcard";
-  front?: string;
-  back?: string;
-  sourceRef?: ConsonantReference | CombinationReference;
+  _type: 'flashcard'
+  front?: string
+  back?: string
+  sourceRef?: ConsonantReference | CombinationReference
   audio?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  difficulty?: number;
-};
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  difficulty?: number
+}
 
 export type LessonReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "lesson";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'lesson'
+}
 
 export type Link = {
-  _type: "link";
-  linkType?: "href" | "lesson";
-  href?: string;
-  lesson?: LessonReference;
-  openInNewTab?: boolean;
-};
+  _type: 'link'
+  linkType?: 'href' | 'lesson'
+  href?: string
+  lesson?: LessonReference
+  openInNewTab?: boolean
+}
 
 export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
 
 export type CallToAction = {
-  _type: "callToAction";
-  eyebrow?: string;
-  heading: string;
-  body?: BlockContentTextOnly;
-  button?: Button;
+  _type: 'callToAction'
+  eyebrow?: string
+  heading: string
+  body?: BlockContentTextOnly
+  button?: Button
   image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  theme?: "light" | "dark";
-  contentAlignment?: "textFirst" | "imageFirst";
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  theme?: 'light' | 'dark'
+  contentAlignment?: 'textFirst' | 'imageFirst'
+}
 
 export type InfoSection = {
-  _type: "infoSection";
-  heading?: string;
-  subheading?: string;
-  content?: BlockContent;
-};
+  _type: 'infoSection'
+  heading?: string
+  subheading?: string
+  content?: BlockContent
+}
 
 export type BlockContentTextOnly = Array<{
   children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-  listItem?: "bullet" | "number";
+    marks?: Array<string>
+    text?: string
+    _type: 'span'
+    _key: string
+  }>
+  style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+  listItem?: 'bullet' | 'number'
   markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-}>;
+    href?: string
+    _type: 'link'
+    _key: string
+  }>
+  level?: number
+  _type: 'block'
+  _key: string
+}>
 
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-  listItem?: "bullet" | "number";
-  markDefs?: Array<{
-    linkType?: "href" | "lesson";
-    href?: string;
-    lesson?: LessonReference;
-    openInNewTab?: boolean;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  asset?: SanityImageAssetReference;
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  _type: "image";
-  _key: string;
-}>;
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<{
+        linkType?: 'href' | 'lesson'
+        href?: string
+        lesson?: LessonReference
+        openInNewTab?: boolean
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
+    }
+  | {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    }
+>
 
 export type Button = {
-  _type: "button";
-  buttonText?: string;
-  link?: Link;
-};
+  _type: 'button'
+  buttonText?: string
+  link?: Link
+}
 
 export type FlashcardSet = {
-  _id: string;
-  _type: "flashcardSet";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  description?: string;
-  cards?: Array<{
-    _key: string;
-  } & Flashcard | ConsonantReference | CombinationReference>;
+  _id: string
+  _type: 'flashcardSet'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  description?: string
+  cards?: Array<
+    | ({
+        _key: string
+      } & Flashcard)
+    | ConsonantReference
+    | CombinationReference
+  >
   settings?: {
-    shuffle?: boolean;
-    spacedRepetition?: boolean;
-  };
-};
+    shuffle?: boolean
+    spacedRepetition?: boolean
+  }
+}
 
 export type VowelReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "vowel";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'vowel'
+}
 
 export type WordReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "word";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'word'
+}
 
 export type PhraseReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "phrase";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'phrase'
+}
 
 export type Combination = {
-  _id: string;
-  _type: "combination";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  base: ConsonantReference;
-  vowel?: VowelReference;
-  glyph: string;
-  transliteration?: string;
+  _id: string
+  _type: 'combination'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  base: ConsonantReference
+  vowel?: VowelReference
+  glyph: string
+  transliteration?: string
   audio?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  examples?: ArrayOf<WordReference | PhraseReference>;
-  notes?: string;
-};
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
+}
 
 export type Vowel = {
-  _id: string;
-  _type: "vowel";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  label: string;
-  matra?: string;
-  transliteration?: string;
-  order?: number;
+  _id: string
+  _type: 'vowel'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  label: string
+  matra?: string
+  transliteration?: string
+  order?: number
   audio?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-};
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+}
 
 export type Consonant = {
-  _id: string;
-  _type: "consonant";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  char: string;
-  transliteration: string;
-  pronunciationDescription?: string;
-  type: "consonant" | "vowel";
+  _id: string
+  _type: 'consonant'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
+  char: string
+  transliteration: string
+  pronunciationDescription?: string
+  type: 'consonant' | 'vowel'
   audio?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  examples?: ArrayOf<WordReference | PhraseReference>;
-  notes?: string;
-};
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  examples?: ArrayOf<WordReference | PhraseReference>
+  notes?: string
+}
 
 export type WordOfTheDay = {
-  _id: string;
-  _type: "wordOfTheDay";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  word: WordReference;
-  scheduledFor: string;
-  notes?: string;
-};
+  _id: string
+  _type: 'wordOfTheDay'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  word: WordReference
+  scheduledFor: string
+  notes?: string
+}
 
 export type TagsReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "tags";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'tags'
+}
 
 export type Phrase = {
-  _id: string;
-  _type: "phrase";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  english: string;
-  romanized: string;
-  devanagari: string;
-  pronunciation: string;
-  tags?: Array<{
-    _key: string;
-  } & TagsReference>;
-};
+  _id: string
+  _type: 'phrase'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
+  tags?: Array<
+    {
+      _key: string
+    } & TagsReference
+  >
+}
 
 export type Word = {
-  _id: string;
-  _type: "word";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  english: string;
-  romanized: string;
-  devanagari: string;
-  pronunciation: string;
+  _id: string
+  _type: 'word'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
   audio?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  tags?: Array<{
-    _key: string;
-  } & TagsReference>;
-  migrateToPhrase?: boolean;
-};
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  tags?: Array<
+    {
+      _key: string
+    } & TagsReference
+  >
+  migrateToPhrase?: boolean
+}
 
 export type Tags = {
-  _id: string;
-  _type: "tags";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-};
+  _id: string
+  _type: 'tags'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+}
 
 export type Settings = {
-  _id: string;
-  _type: "settings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
+  _id: string
+  _type: 'settings'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
   description?: Array<{
     children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: never
     markDefs?: Array<{
-      linkType?: "href" | "lesson";
-      href?: string;
-      lesson?: LessonReference;
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+      linkType?: 'href' | 'lesson'
+      href?: string
+      lesson?: LessonReference
+      openInNewTab?: boolean
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
   ogImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    metadataBase?: string;
-    _type: "image";
-  };
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    metadataBase?: string
+    _type: 'image'
+  }
+}
 
 export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
 
 export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
 
 export type PersonReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "person";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'person'
+}
 
 export type CourseSectionReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "courseSection";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'courseSection'
+}
 
 export type Lesson = {
-  _id: string;
-  _type: "lesson";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  heading?: string;
-  subheading?: string;
-  content?: BlockContent;
-  excerpt?: string;
-  pageBuilder?: Array<{
-    _key: string;
-  } & CallToAction | {
-    _key: string;
-  } & InfoSection>;
+  _id: string
+  _type: 'lesson'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  heading?: string
+  subheading?: string
+  content?: BlockContent
+  excerpt?: string
+  pageBuilder?: Array<
+    | ({
+        _key: string
+      } & CallToAction)
+    | ({
+        _key: string
+      } & InfoSection)
+  >
   coverImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  date?: string;
-  author?: PersonReference;
-  section?: CourseSectionReference;
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  date?: string
+  author?: PersonReference
+  section?: CourseSectionReference
+}
 
 export type CourseSection = {
-  _id: string;
-  _type: "courseSection";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  description?: string;
-  level?: string;
-  order?: number;
-  lessons?: Array<{
-    _key: string;
-  } & LessonReference>;
-};
+  _id: string
+  _type: 'courseSection'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: string
+  level?: string
+  order?: number
+  lessons?: Array<
+    {
+      _key: string
+    } & LessonReference
+  >
+}
 
 export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
+  _type: 'slug'
+  current: string
+  source?: string
+}
 
 export type Person = {
-  _id: string;
-  _type: "person";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  firstName: string;
-  lastName: string;
+  _id: string
+  _type: 'person'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  firstName: string
+  lastName: string
   picture: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+}
 
 export type SanityAssistInstructionTask = {
-  _type: "sanity.assist.instructionTask";
-  path?: string;
-  instructionKey?: string;
-  started?: string;
-  updated?: string;
-  info?: string;
-};
+  _type: 'sanity.assist.instructionTask'
+  path?: string
+  instructionKey?: string
+  started?: string
+  updated?: string
+  info?: string
+}
 
 export type SanityAssistTaskStatus = {
-  _type: "sanity.assist.task.status";
-  tasks?: Array<{
-    _key: string;
-  } & SanityAssistInstructionTask>;
-};
+  _type: 'sanity.assist.task.status'
+  tasks?: Array<
+    {
+      _key: string
+    } & SanityAssistInstructionTask
+  >
+}
 
 export type SanityAssistSchemaTypeAnnotations = {
-  _type: "sanity.assist.schemaType.annotations";
-  title?: string;
-  fields?: Array<{
-    _key: string;
-  } & SanityAssistSchemaTypeField>;
-};
+  _type: 'sanity.assist.schemaType.annotations'
+  title?: string
+  fields?: Array<
+    {
+      _key: string
+    } & SanityAssistSchemaTypeField
+  >
+}
 
 export type SanityAssistOutputType = {
-  _type: "sanity.assist.output.type";
-  type?: string;
-};
+  _type: 'sanity.assist.output.type'
+  type?: string
+}
 
 export type SanityAssistOutputField = {
-  _type: "sanity.assist.output.field";
-  path?: string;
-};
+  _type: 'sanity.assist.output.field'
+  path?: string
+}
 
 export type AssistInstructionContextReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "assist.instruction.context";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'assist.instruction.context'
+}
 
 export type SanityAssistInstructionContext = {
-  _type: "sanity.assist.instruction.context";
-  reference: AssistInstructionContextReference;
-};
+  _type: 'sanity.assist.instruction.context'
+  reference: AssistInstructionContextReference
+}
 
 export type AssistInstructionContext = {
-  _id: string;
-  _type: "assist.instruction.context";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
+  _id: string
+  _type: 'assist.instruction.context'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title?: string
   context?: Array<{
     children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
-    markDefs?: null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-};
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: never
+    markDefs?: null
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+}
 
 export type SanityAssistInstructionUserInput = {
-  _type: "sanity.assist.instruction.userInput";
-  message: string;
-  description?: string;
-};
+  _type: 'sanity.assist.instruction.userInput'
+  message: string
+  description?: string
+}
 
 export type SanityAssistInstructionPrompt = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  } | {
-    _key: string;
-  } & SanityAssistInstructionFieldRef | {
-    _key: string;
-  } & SanityAssistInstructionContext | {
-    _key: string;
-  } & SanityAssistInstructionUserInput>;
-  style?: "normal";
-  listItem?: never;
-  markDefs?: null;
-  level?: number;
-  _type: "block";
-  _key: string;
-}>;
+  children?: Array<
+    | {
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }
+    | ({
+        _key: string
+      } & SanityAssistInstructionFieldRef)
+    | ({
+        _key: string
+      } & SanityAssistInstructionContext)
+    | ({
+        _key: string
+      } & SanityAssistInstructionUserInput)
+  >
+  style?: 'normal'
+  listItem?: never
+  markDefs?: null
+  level?: number
+  _type: 'block'
+  _key: string
+}>
 
 export type SanityAssistInstructionFieldRef = {
-  _type: "sanity.assist.instruction.fieldRef";
-  path?: string;
-};
+  _type: 'sanity.assist.instruction.fieldRef'
+  path?: string
+}
 
 export type SanityAssistInstruction = {
-  _type: "sanity.assist.instruction";
-  prompt?: SanityAssistInstructionPrompt;
-  icon?: string;
-  title?: string;
-  userId?: string;
-  createdById?: string;
-  output?: Array<{
-    _key: string;
-  } & SanityAssistOutputField | {
-    _key: string;
-  } & SanityAssistOutputType>;
-};
+  _type: 'sanity.assist.instruction'
+  prompt?: SanityAssistInstructionPrompt
+  icon?: string
+  title?: string
+  userId?: string
+  createdById?: string
+  output?: Array<
+    | ({
+        _key: string
+      } & SanityAssistOutputField)
+    | ({
+        _key: string
+      } & SanityAssistOutputType)
+  >
+}
 
 export type SanityAssistSchemaTypeField = {
-  _type: "sanity.assist.schemaType.field";
-  path?: string;
-  instructions?: Array<{
-    _key: string;
-  } & SanityAssistInstruction>;
-};
+  _type: 'sanity.assist.schemaType.field'
+  path?: string
+  instructions?: Array<
+    {
+      _key: string
+    } & SanityAssistInstruction
+  >
+}
 
 export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
-  background?: string;
-  foreground?: string;
-  population?: number;
-  title?: string;
-};
+  _type: 'sanity.imagePaletteSwatch'
+  background?: string
+  foreground?: string
+  population?: number
+  title?: string
+}
 
 export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
-  darkMuted?: SanityImagePaletteSwatch;
-  lightVibrant?: SanityImagePaletteSwatch;
-  darkVibrant?: SanityImagePaletteSwatch;
-  vibrant?: SanityImagePaletteSwatch;
-  dominant?: SanityImagePaletteSwatch;
-  lightMuted?: SanityImagePaletteSwatch;
-  muted?: SanityImagePaletteSwatch;
-};
+  _type: 'sanity.imagePalette'
+  darkMuted?: SanityImagePaletteSwatch
+  lightVibrant?: SanityImagePaletteSwatch
+  darkVibrant?: SanityImagePaletteSwatch
+  vibrant?: SanityImagePaletteSwatch
+  dominant?: SanityImagePaletteSwatch
+  lightMuted?: SanityImagePaletteSwatch
+  muted?: SanityImagePaletteSwatch
+}
 
 export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
-  height: number;
-  width: number;
-  aspectRatio: number;
-};
+  _type: 'sanity.imageDimensions'
+  height: number
+  width: number
+  aspectRatio: number
+}
 
 export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  thumbHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
+  _type: 'sanity.imageMetadata'
+  location?: Geopoint
+  dimensions?: SanityImageDimensions
+  palette?: SanityImagePalette
+  lqip?: string
+  blurHash?: string
+  thumbHash?: string
+  hasAlpha?: boolean
+  isOpaque?: boolean
+}
 
 export type SanityFileAsset = {
-  _id: string;
-  _type: "sanity.fileAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash: string;
-  extension: string;
-  mimeType: string;
-  size: number;
-  assetId: string;
-  uploadId?: string;
-  path: string;
-  url: string;
-  source?: SanityAssetSourceData;
-};
+  _id: string
+  _type: 'sanity.fileAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
+  uploadId?: string
+  path: string
+  url: string
+  source?: SanityAssetSourceData
+}
 
 export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
+  _type: 'sanity.assetSourceData'
+  name?: string
+  id?: string
+  url?: string
+}
 
 export type SanityImageAsset = {
-  _id: string;
-  _type: "sanity.imageAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash: string;
-  extension: string;
-  mimeType: string;
-  size: number;
-  assetId: string;
-  uploadId?: string;
-  path: string;
-  url: string;
-  metadata?: SanityImageMetadata;
-  source?: SanityAssetSourceData;
-};
+  _id: string
+  _type: 'sanity.imageAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
+  uploadId?: string
+  path: string
+  url: string
+  metadata?: SanityImageMetadata
+  source?: SanityAssetSourceData
+}
 
 export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
+  _type: 'geopoint'
+  lat?: number
+  lng?: number
+  alt?: number
+}
 
-export type AllSanitySchemaTypes = ConsonantReference | CombinationReference | SanityFileAssetReference | Flashcard | LessonReference | Link | SanityImageAssetReference | CallToAction | InfoSection | BlockContentTextOnly | BlockContent | Button | FlashcardSet | VowelReference | WordReference | PhraseReference | Combination | Vowel | Consonant | WordOfTheDay | TagsReference | Phrase | Word | Tags | Settings | SanityImageCrop | SanityImageHotspot | PersonReference | CourseSectionReference | Lesson | CourseSection | Slug | Person | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | AssistInstructionContextReference | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes =
+  | ConsonantReference
+  | CombinationReference
+  | SanityFileAssetReference
+  | Flashcard
+  | LessonReference
+  | Link
+  | SanityImageAssetReference
+  | CallToAction
+  | InfoSection
+  | BlockContentTextOnly
+  | BlockContent
+  | Button
+  | FlashcardSet
+  | VowelReference
+  | WordReference
+  | PhraseReference
+  | Combination
+  | Vowel
+  | Consonant
+  | WordOfTheDay
+  | TagsReference
+  | Phrase
+  | Word
+  | Tags
+  | Settings
+  | SanityImageCrop
+  | SanityImageHotspot
+  | PersonReference
+  | CourseSectionReference
+  | Lesson
+  | CourseSection
+  | Slug
+  | Person
+  | SanityAssistInstructionTask
+  | SanityAssistTaskStatus
+  | SanityAssistSchemaTypeAnnotations
+  | SanityAssistOutputType
+  | SanityAssistOutputField
+  | AssistInstructionContextReference
+  | SanityAssistInstructionContext
+  | AssistInstructionContext
+  | SanityAssistInstructionUserInput
+  | SanityAssistInstructionPrompt
+  | SanityAssistInstructionFieldRef
+  | SanityAssistInstruction
+  | SanityAssistSchemaTypeField
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
 // Query: *[_type == "settings"][0]
 export type SettingsQueryResult = {
-  _id: string;
-  _type: "settings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
+  _id: string
+  _type: 'settings'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
   description?: Array<{
     children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal";
-    listItem?: never;
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: never
     markDefs?: Array<{
-      linkType?: "href" | "lesson";
-      href?: string;
-      lesson?: LessonReference;
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+      linkType?: 'href' | 'lesson'
+      href?: string
+      lesson?: LessonReference
+      openInNewTab?: boolean
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
   ogImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    metadataBase?: string;
-    _type: "image";
-  };
-} | null;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    metadataBase?: string
+    _type: 'image'
+  }
+} | null
 
 // Source: sanity/lib/queries.ts
 // Variable: sitemapData
 // Query: *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {    "slug": slug.current,    _type,    _updatedAt,  }
 export type SitemapDataResult = Array<{
-  slug: string;
-  _type: "lesson";
-  _updatedAt: string;
-}>;
+  slug: string
+  _type: 'lesson'
+  _updatedAt: string
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: allLessonsQuery
 // Query: *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
 export type AllLessonsQueryResult = Array<{
-  _id: string;
-  status: "draft" | "published";
-  title: string;
-  slug: string;
-  excerpt: string | null;
+  _id: string
+  status: 'draft' | 'published'
+  title: string
+  slug: string
+  excerpt: string | null
   coverImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
-  date: string;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  } | null
+  date: string
   author: {
-    firstName: string;
-    lastName: string;
+    firstName: string
+    lastName: string
     picture: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    };
-  } | null;
-}>;
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  } | null
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: moreLessonsQuery
 // Query: *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
 export type MoreLessonsQueryResult = Array<{
-  _id: string;
-  status: "draft" | "published";
-  title: string;
-  slug: string;
-  excerpt: string | null;
+  _id: string
+  status: 'draft' | 'published'
+  title: string
+  slug: string
+  excerpt: string | null
   coverImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
-  date: string;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  } | null
+  date: string
   author: {
-    firstName: string;
-    lastName: string;
+    firstName: string
+    lastName: string
     picture: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    };
-  } | null;
-}>;
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  } | null
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: lessonQuery
 // Query: *[_type == "lesson" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }    }  },      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "lesson": lesson->slug.current  }          }        }      },    },  }
 export type LessonQueryResult = {
-  content: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs: Array<{
-      linkType?: "href" | "lesson";
-      href?: string;
-      lesson: string | null;
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-      page: null;
-    }> | null;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-    _key: string;
-    markDefs: null;
-  }> | null;
-  _id: string;
-  status: "draft" | "published";
-  title: string;
-  slug: string;
-  excerpt: string | null;
+  content: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs: Array<{
+          linkType?: 'href' | 'lesson'
+          href?: string
+          lesson: string | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+          page: null
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+        markDefs: null
+      }
+  > | null
+  _id: string
+  status: 'draft' | 'published'
+  title: string
+  slug: string
+  excerpt: string | null
   coverImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
-  date: string;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  } | null
+  date: string
   author: {
-    firstName: string;
-    lastName: string;
+    firstName: string
+    lastName: string
     picture: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    };
-  } | null;
-  pageBuilder: Array<{
-    _key: string;
-    _type: "callToAction";
-    eyebrow?: string;
-    heading: string;
-    body?: BlockContentTextOnly;
-    button: {
-      _type: "button";
-      buttonText?: string;
-      link: {
-        _type: "link";
-        linkType?: "href" | "lesson";
-        href?: string;
-        lesson: string | null;
-        openInNewTab?: boolean;
-        page: null;
-      } | null;
-    } | null;
-    image?: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-    theme?: "dark" | "light";
-    contentAlignment?: "imageFirst" | "textFirst";
-  } | {
-    _key: string;
-    _type: "infoSection";
-    heading?: string;
-    subheading?: string;
-    content: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-      listItem?: "bullet" | "number";
-      markDefs: Array<{
-        linkType?: "href" | "lesson";
-        href?: string;
-        lesson: string | null;
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-        page: null;
-      }> | null;
-      level?: number;
-      _type: "block";
-      _key: string;
-    } | {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-      _key: string;
-      markDefs: null;
-    }> | null;
-  }> | null;
-} | null;
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  } | null
+  pageBuilder: Array<
+    | {
+        _key: string
+        _type: 'callToAction'
+        eyebrow?: string
+        heading: string
+        body?: BlockContentTextOnly
+        button: {
+          _type: 'button'
+          buttonText?: string
+          link: {
+            _type: 'link'
+            linkType?: 'href' | 'lesson'
+            href?: string
+            lesson: string | null
+            openInNewTab?: boolean
+            page: null
+          } | null
+        } | null
+        image?: {
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          _type: 'image'
+        }
+        theme?: 'dark' | 'light'
+        contentAlignment?: 'imageFirst' | 'textFirst'
+      }
+    | {
+        _key: string
+        _type: 'infoSection'
+        heading?: string
+        subheading?: string
+        content: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+              listItem?: 'bullet' | 'number'
+              markDefs: Array<{
+                linkType?: 'href' | 'lesson'
+                href?: string
+                lesson: string | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+                page: null
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
+            }
+          | {
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              _type: 'image'
+              _key: string
+              markDefs: null
+            }
+        > | null
+      }
+  > | null
+} | null
 
 // Source: sanity/lib/queries.ts
 // Variable: lessonPagesSlugs
 // Query: *[_type == "lesson" && defined(slug.current)]  {"slug": slug.current}
 export type LessonPagesSlugsResult = Array<{
-  slug: string;
-}>;
+  slug: string
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: wordsQuery
 // Query: *[_type == "word"] | order(english asc) {    english,    romanized,    devanagari,    pronunciation,    "audio": audio.asset->url,    "tags": tags[]->_id,  }
 export type WordsQueryResult = Array<{
-  english: string;
-  romanized: string;
-  devanagari: string;
-  pronunciation: string;
-  audio: string | null;
-  tags: Array<string> | null;
-}>;
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
+  audio: string | null
+  tags: Array<string> | null
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: tagsQuery
 // Query: *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {    _id,    title,  }
 export type TagsQueryResult = Array<{
-  _id: string;
-  title: string;
-}>;
+  _id: string
+  title: string
+}>
 
 // Source: sanity/lib/queries.ts
 // Variable: currentWordOfTheDayQuery
 // Query: *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {    _id,    scheduledFor,    notes,    word-> {      _id,      english,      romanized,      devanagari,      pronunciation,      "audio": audio.asset->url,    }  }
 export type CurrentWordOfTheDayQueryResult = {
-  _id: string;
-  scheduledFor: string;
-  notes: string | null;
+  _id: string
+  scheduledFor: string
+  notes: string | null
   word: {
-    _id: string;
-    english: string;
-    romanized: string;
-    devanagari: string;
-    pronunciation: string;
-    audio: string | null;
-  };
-} | null;
+    _id: string
+    english: string
+    romanized: string
+    devanagari: string
+    pronunciation: string
+    audio: string | null
+  }
+} | null
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+import '@sanity/client'
+declare module '@sanity/client' {
   interface SanityQueries {
-    "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == \"page\" || _type == \"lesson\" && defined(slug.current)] | order(_type asc) {\n    \"slug\": slug.current,\n    _type,\n    _updatedAt,\n  }\n": SitemapDataResult;
-    "\n  *[_type == \"lesson\" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": AllLessonsQueryResult;
-    "\n  *[_type == \"lesson\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": MoreLessonsQueryResult;
-    "\n  *[_type == \"lesson\" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"lesson\": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"lesson\": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"lesson\": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n": LessonQueryResult;
-    "\n  *[_type == \"lesson\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": LessonPagesSlugsResult;
-    "\n  *[_type == \"word\"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    \"audio\": audio.asset->url,\n    \"tags\": tags[]->_id,\n  }\n": WordsQueryResult;
-    "\n  *[_type == \"tags\" && count(*[_type == \"word\" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n": TagsQueryResult;
-    "\n  *[_type == \"wordOfTheDay\" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n      \"audio\": audio.asset->url,\n    }\n  }\n": CurrentWordOfTheDayQueryResult;
+    '*[_type == "settings"][0]': SettingsQueryResult
+    '\n  *[_type == "page" || _type == "lesson" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
+    '\n  *[_type == "lesson" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllLessonsQueryResult
+    '\n  *[_type == "lesson" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MoreLessonsQueryResult
+    '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': LessonQueryResult
+    '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
+    '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
+    '\n  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
+    '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n      "audio": audio.asset->url,\n    }\n  }\n': CurrentWordOfTheDayQueryResult
   }
 }
-
