@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react'
 import {publicClient} from '@/sanity/lib/client'
 import FlashCards from '@/app/components/FlashCards/FlashCards'
+import {getReviewCardLimitFromClient} from '@/app/lib/reviewSettings'
 
 import styles from './page.module.css'
 
@@ -28,7 +29,9 @@ export default function ConsonantsPage() {
         // Remove this log after debugging
         // eslint-disable-next-line no-console
         console.log('raw fetched consonants:', shuffledData)
-        const items = shuffledData.map((c: any) => {
+        const limit = getReviewCardLimitFromClient()
+        const limitedData = limit ? shuffledData.slice(0, limit) : shuffledData
+        const items = limitedData.map((c: any) => {
           const examples = c.examples || []
           const raw = examples.length ? examples[Math.floor(Math.random() * examples.length)] : null
           // Normalize example fields so UI can use `transliteration` and `translation`

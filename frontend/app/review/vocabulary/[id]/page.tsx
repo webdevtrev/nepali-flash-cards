@@ -1,21 +1,27 @@
+import {cookies} from 'next/headers'
 import {notFound} from 'next/navigation'
 import {publicClient} from '@/sanity/lib/client'
 import {tagByIdQuery, wordsByTagQuery} from '@/sanity/lib/queries'
 import FlashCards from '@/app/components/FlashCards/FlashCards'
+import {REVIEW_CARD_LIMIT, REVIEW_CARD_LIMIT_COOKIE} from '@/app/lib/reviewSettings'
 import styles from './page.module.css'
 
 export default async function TagReview({params}: {params: Promise<{id: string}>}) {
   const {id} = await params
-  const [tag, words] = await Promise.all([
+  const [tag, words, cookieStore] = await Promise.all([
     publicClient.fetch(tagByIdQuery, {tagId: id}),
     publicClient.fetch(wordsByTagQuery, {tagId: id}),
+    cookies(),
   ])
 
   if (!tag) {
     notFound()
   }
 
-  const mapped = words.map((w) => ({
+  const limitEnabled = cookieStore.get(REVIEW_CARD_LIMIT_COOKIE)?.value === '1'
+  const limitedWords = limitEnabled ? words.slice(0, REVIEW_CARD_LIMIT) : words
+
+  const mapped = limitedWords.map((w) => ({
     devanagari: w.devanagari ?? '',
     transliteration: w.romanized ?? '',
     translation: w.english ?? '',

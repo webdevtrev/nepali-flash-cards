@@ -19,7 +19,9 @@ export default function Devanagari({
   return (
     <div className={styles.container}>
       <div className={styles.answer}>
-        <div className={styles.devanagari}>{devanagari}</div>
+        <div lang="ne" className={styles.devanagari}>
+          {devanagari}
+        </div>
         <div className={styles.transliteration}>{transliteration}</div>
       </div>
       {example && (
