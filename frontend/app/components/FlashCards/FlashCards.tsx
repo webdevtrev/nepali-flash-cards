@@ -44,7 +44,6 @@ export default function FlashCards({cards, type, className}: FlashCardsProps) {
       if (!prev) return prev
       const newCards = [...prev]
       const currentCardData = newCards[currentCard]
-      console.log([...newCards, currentCardData])
       return [...newCards, currentCardData]
     })
     nextCard()
