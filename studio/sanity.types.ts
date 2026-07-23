@@ -21,38 +21,10 @@ type ArrayOf<T> = Array<
 >
 
 // Source: ../sanity.schema.json
-export type ConsonantReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'consonant'
-}
-
-export type CombinationReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'combination'
-}
-
-export type SanityFileAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
-}
-
-export type Flashcard = {
-  _type: 'flashcard'
-  front?: string
-  back?: string
-  sourceRef?: ConsonantReference | CombinationReference
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
-  difficulty?: number
+export type Button = {
+  _type: 'button'
+  buttonText?: string
+  link?: Link
 }
 
 export type LessonReference = {
@@ -152,38 +124,11 @@ export type BlockContent = Array<
     }
 >
 
-export type Button = {
-  _type: 'button'
-  buttonText?: string
-  link?: Link
-}
-
-export type FlashcardSet = {
-  _id: string
-  _type: 'flashcardSet'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  title: string
-  description?: string
-  cards?: Array<
-    | ({
-        _key: string
-      } & Flashcard)
-    | ConsonantReference
-    | CombinationReference
-  >
-  settings?: {
-    shuffle?: boolean
-    spacedRepetition?: boolean
-  }
-}
-
-export type VowelReference = {
+export type SanityFileAssetReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'vowel'
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
 }
 
 export type WordReference = {
@@ -200,42 +145,6 @@ export type PhraseReference = {
   [internalGroqTypeReferenceTo]?: 'phrase'
 }
 
-export type Combination = {
-  _id: string
-  _type: 'combination'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  base: ConsonantReference
-  vowel?: VowelReference
-  glyph: string
-  transliteration?: string
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
-  examples?: ArrayOf<WordReference | PhraseReference>
-  notes?: string
-}
-
-export type Vowel = {
-  _id: string
-  _type: 'vowel'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  label: string
-  matra?: string
-  transliteration?: string
-  order?: number
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
-}
-
 export type Consonant = {
   _id: string
   _type: 'consonant'
@@ -245,6 +154,7 @@ export type Consonant = {
   title?: string
   char: string
   transliteration: string
+  pronunciationDescription?: string
   type: 'consonant' | 'vowel'
   audio?: {
     asset?: SanityFileAssetReference
@@ -701,10 +611,7 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
-  | ConsonantReference
-  | CombinationReference
-  | SanityFileAssetReference
-  | Flashcard
+  | Button
   | LessonReference
   | Link
   | SanityImageAssetReference
@@ -712,13 +619,9 @@ export type AllSanitySchemaTypes =
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
-  | Button
-  | FlashcardSet
-  | VowelReference
+  | SanityFileAssetReference
   | WordReference
   | PhraseReference
-  | Combination
-  | Vowel
   | Consonant
   | WordOfTheDay
   | TagsReference
