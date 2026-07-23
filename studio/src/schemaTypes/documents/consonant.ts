@@ -55,5 +55,11 @@ export const consonant = defineType({
       of: [{type: 'reference', to: [{type: 'word'}, {type: 'phrase'}]}],
     }),
     defineField({name: 'notes', title: 'Notes', type: 'text'}),
+    defineField({
+      name: 'line',
+      title: 'Line',
+      type: 'number',
+      description: 'The line number in the Devanagari chart where this consonant appears',
+    }),
   ],
 })

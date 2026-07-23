@@ -30,3 +30,16 @@
   font-size: 0.875rem;
   color: #777;
 }
+.pronunciation {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-info-rgba);
+  width: 100%;
+  border: 2px solid var(--color-info);
+  padding: 1rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+}

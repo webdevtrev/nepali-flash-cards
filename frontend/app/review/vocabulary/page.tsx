@@ -2,7 +2,12 @@ import Link from 'next/link'
 import Card from '../../components/Card'
 import styles from '../page.module.css'
 import {FaArrowLeft} from 'react-icons/fa'
-export default function ReviewPage() {
+import {publicClient} from '@/sanity/lib/client'
+import {tagsQuery} from '@/sanity/lib/queries'
+
+export default async function ReviewPage() {
+  const tags = await publicClient.fetch(tagsQuery)
+
   return (
     <div>
       <div>
@@ -16,8 +21,9 @@ export default function ReviewPage() {
       </div>
 
       <div className={styles.cards}>
-        <Card title="Word of the Day" href="/review/vocabulary/word-of-the-day" />
-        <Card title="Random" href="/review/vocabulary/random" />
+        {tags.map((tag) => (
+          <Card key={tag._id} title={tag.title} href={`/review/vocabulary/${tag._id}`} />
+        ))}
       </div>
     </div>
   )

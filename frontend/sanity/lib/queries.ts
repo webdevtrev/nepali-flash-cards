@@ -112,6 +112,24 @@ export const tagsQuery = defineQuery(`
   }
 `)
 
+export const tagByIdQuery = defineQuery(`
+  *[_type == "tags" && _id == $tagId][0] {
+    _id,
+    title,
+  }
+`)
+
+export const wordsByTagQuery = defineQuery(`
+  *[_type == "word" && references($tagId)] | order(english asc) {
+    _id,
+    english,
+    romanized,
+    devanagari,
+    pronunciation,
+    "audio": audio.asset->url,
+  }
+`)
+
 export const currentWordOfTheDayQuery = defineQuery(`
   *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {
     _id,

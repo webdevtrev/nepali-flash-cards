@@ -21,38 +21,10 @@ type ArrayOf<T> = Array<
 >
 
 // Source: ../sanity.schema.json
-export type ConsonantReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'consonant'
-}
-
-export type CombinationReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'combination'
-}
-
-export type SanityFileAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
-}
-
-export type Flashcard = {
-  _type: 'flashcard'
-  front?: string
-  back?: string
-  sourceRef?: ConsonantReference | CombinationReference
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
-  difficulty?: number
+export type Button = {
+  _type: 'button'
+  buttonText?: string
+  link?: Link
 }
 
 export type LessonReference = {
@@ -152,38 +124,11 @@ export type BlockContent = Array<
     }
 >
 
-export type Button = {
-  _type: 'button'
-  buttonText?: string
-  link?: Link
-}
-
-export type FlashcardSet = {
-  _id: string
-  _type: 'flashcardSet'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  title: string
-  description?: string
-  cards?: Array<
-    | ({
-        _key: string
-      } & Flashcard)
-    | ConsonantReference
-    | CombinationReference
-  >
-  settings?: {
-    shuffle?: boolean
-    spacedRepetition?: boolean
-  }
-}
-
-export type VowelReference = {
+export type SanityFileAssetReference = {
   _ref: string
   _type: 'reference'
   _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'vowel'
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
 }
 
 export type WordReference = {
@@ -198,42 +143,6 @@ export type PhraseReference = {
   _type: 'reference'
   _weak?: boolean
   [internalGroqTypeReferenceTo]?: 'phrase'
-}
-
-export type Combination = {
-  _id: string
-  _type: 'combination'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  base: ConsonantReference
-  vowel?: VowelReference
-  glyph: string
-  transliteration?: string
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
-  examples?: ArrayOf<WordReference | PhraseReference>
-  notes?: string
-}
-
-export type Vowel = {
-  _id: string
-  _type: 'vowel'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
-  label: string
-  matra?: string
-  transliteration?: string
-  order?: number
-  audio?: {
-    asset?: SanityFileAssetReference
-    media?: unknown
-    _type: 'file'
-  }
 }
 
 export type Consonant = {
@@ -702,10 +611,7 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
-  | ConsonantReference
-  | CombinationReference
-  | SanityFileAssetReference
-  | Flashcard
+  | Button
   | LessonReference
   | Link
   | SanityImageAssetReference
@@ -713,13 +619,9 @@ export type AllSanitySchemaTypes =
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
-  | Button
-  | FlashcardSet
-  | VowelReference
+  | SanityFileAssetReference
   | WordReference
   | PhraseReference
-  | Combination
-  | Vowel
   | Consonant
   | WordOfTheDay
   | TagsReference
@@ -1034,6 +936,26 @@ export type TagsQueryResult = Array<{
 }>
 
 // Source: sanity/lib/queries.ts
+// Variable: tagByIdQuery
+// Query: *[_type == "tags" && _id == $tagId][0] {    _id,    title,  }
+export type TagByIdQueryResult = {
+  _id: string
+  title: string
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: wordsByTagQuery
+// Query: *[_type == "word" && references($tagId)] | order(english asc) {    _id,    english,    romanized,    devanagari,    pronunciation,    "audio": audio.asset->url,  }
+export type WordsByTagQueryResult = Array<{
+  _id: string
+  english: string
+  romanized: string
+  devanagari: string
+  pronunciation: string
+  audio: string | null
+}>
+
+// Source: sanity/lib/queries.ts
 // Variable: currentWordOfTheDayQuery
 // Query: *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {    _id,    scheduledFor,    notes,    word-> {      _id,      english,      romanized,      devanagari,      pronunciation,      "audio": audio.asset->url,    }  }
 export type CurrentWordOfTheDayQueryResult = {
@@ -1062,6 +984,8 @@ declare module '@sanity/client' {
     '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
     '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
     '\n  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
+    '\n  *[_type == "tags" && _id == $tagId][0] {\n    _id,\n    title,\n  }\n': TagByIdQueryResult
+    '\n  *[_type == "word" && references($tagId)] | order(english asc) {\n    _id,\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n  }\n': WordsByTagQueryResult
     '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n      "audio": audio.asset->url,\n    }\n  }\n': CurrentWordOfTheDayQueryResult
   }
 }

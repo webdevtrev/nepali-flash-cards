@@ -3,11 +3,12 @@
 import React, {useEffect, useState} from 'react'
 import {publicClient} from '@/sanity/lib/client'
 import FlashCards from '@/app/components/FlashCards/FlashCards'
+import {getReviewCardLimitFromClient} from '@/app/lib/reviewSettings'
 
 import styles from './page.module.css'
 
 // Fetch examples dereferenced (they expose `romanized` and `english` fields in the CMS)
-const consonantsQuery = `*[_type == "consonant"] | order(title asc){_id, char, transliteration, title, pronunciationDescription, "examples": examples[]->{devanagari, romanized, english}}`
+const consonantsQuery = `*[_type == "consonant" && type == 'consonant'] | order(title asc){_id, char, transliteration, title, pronunciationDescription, "examples": examples[]->{devanagari, romanized, english}}`
 
 export default function ConsonantsPage() {
   const [consonants, setConsonants] = useState<any[]>([])
@@ -28,7 +29,9 @@ export default function ConsonantsPage() {
         // Remove this log after debugging
         // eslint-disable-next-line no-console
         console.log('raw fetched consonants:', shuffledData)
-        const items = shuffledData.map((c: any) => {
+        const limit = getReviewCardLimitFromClient()
+        const limitedData = limit ? shuffledData.slice(0, limit) : shuffledData
+        const items = limitedData.map((c: any) => {
           const examples = c.examples || []
           const raw = examples.length ? examples[Math.floor(Math.random() * examples.length)] : null
           // Normalize example fields so UI can use `transliteration` and `translation`
