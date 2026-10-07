@@ -163,6 +163,7 @@ export type Consonant = {
   }
   examples?: ArrayOf<WordReference | PhraseReference>
   notes?: string
+  line?: number
 }
 
 export type WordOfTheDay = {
@@ -193,6 +194,11 @@ export type Phrase = {
   romanized: string
   devanagari: string
   pronunciation: string
+  audio?: {
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
   tags?: Array<
     {
       _key: string
@@ -929,7 +935,7 @@ export type WordsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: tagsQuery
-// Query: *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {    _id,    title,  }
+// Query: *[_type == "tags" && count(*[_type in ["word", "phrase"] && references(^._id)]) > 0] | order(title asc) {    _id,    title,  }
 export type TagsQueryResult = Array<{
   _id: string
   title: string
@@ -944,9 +950,9 @@ export type TagByIdQueryResult = {
 } | null
 
 // Source: sanity/lib/queries.ts
-// Variable: wordsByTagQuery
-// Query: *[_type == "word" && references($tagId)] | order(english asc) {    _id,    english,    romanized,    devanagari,    pronunciation,    "audio": audio.asset->url,  }
-export type WordsByTagQueryResult = Array<{
+// Variable: flashcardsByTagQuery
+// Query: *[_type in ["word", "phrase"] && references($tagId)] | order(english asc) {    _id,    english,    romanized,    devanagari,    pronunciation,    "audio": audio.asset->url,  }
+export type FlashcardsByTagQueryResult = Array<{
   _id: string
   english: string
   romanized: string
@@ -983,9 +989,9 @@ declare module '@sanity/client' {
     '\n  *[_type == "lesson" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "lesson": lesson->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': LessonQueryResult
     '\n  *[_type == "lesson" && defined(slug.current)]\n  {"slug": slug.current}\n': LessonPagesSlugsResult
     '\n  *[_type == "word"] | order(english asc) {\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n    "tags": tags[]->_id,\n  }\n': WordsQueryResult
-    '\n  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
+    '\n  *[_type == "tags" && count(*[_type in ["word", "phrase"] && references(^._id)]) > 0] | order(title asc) {\n    _id,\n    title,\n  }\n': TagsQueryResult
     '\n  *[_type == "tags" && _id == $tagId][0] {\n    _id,\n    title,\n  }\n': TagByIdQueryResult
-    '\n  *[_type == "word" && references($tagId)] | order(english asc) {\n    _id,\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n  }\n': WordsByTagQueryResult
+    '\n  *[_type in ["word", "phrase"] && references($tagId)] | order(english asc) {\n    _id,\n    english,\n    romanized,\n    devanagari,\n    pronunciation,\n    "audio": audio.asset->url,\n  }\n': FlashcardsByTagQueryResult
     '\n  *[_type == "wordOfTheDay" && scheduledFor < $tomorrowStartIso] | order(scheduledFor desc)[0] {\n    _id,\n    scheduledFor,\n    notes,\n    word-> {\n      _id,\n      english,\n      romanized,\n      devanagari,\n      pronunciation,\n      "audio": audio.asset->url,\n    }\n  }\n': CurrentWordOfTheDayQueryResult
   }
 }

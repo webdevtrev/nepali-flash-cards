@@ -106,7 +106,7 @@ export const wordsQuery = defineQuery(`
 `)
 
 export const tagsQuery = defineQuery(`
-  *[_type == "tags" && count(*[_type == "word" && references(^._id)]) > 0] | order(title asc) {
+  *[_type == "tags" && count(*[_type in ["word", "phrase"] && references(^._id)]) > 0] | order(title asc) {
     _id,
     title,
   }
@@ -119,8 +119,9 @@ export const tagByIdQuery = defineQuery(`
   }
 `)
 
-export const wordsByTagQuery = defineQuery(`
-  *[_type == "word" && references($tagId)] | order(english asc) {
+// Flashcard set for a tag: both words and phrases carrying the tag.
+export const flashcardsByTagQuery = defineQuery(`
+  *[_type in ["word", "phrase"] && references($tagId)] | order(english asc) {
     _id,
     english,
     romanized,
