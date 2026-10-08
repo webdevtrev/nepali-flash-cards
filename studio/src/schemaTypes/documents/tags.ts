@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
 /*
-  This is the schema definition for a tag document. Tags are used to categorize words in the flash card app.
+  This is the schema definition for a tag document. Tags are used to categorize words and phrases into flash card sets.
 */
 
 export const tags = defineType({
